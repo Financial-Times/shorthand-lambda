@@ -1,6 +1,6 @@
 # Next Serverless app example
 
-This is the resulting repo from the serverless tutorial: https://financial-times.github.io/next/docs/developer-guide/serverless/
+This is the result from following the [Next serverless computing tutorial](https://financial-times.github.io/next/docs/developer-guide/serverless/).
 
 Please note that you'll need `.env` with appropriate key-value pairs as explained in the tutorial:
 
@@ -15,4 +15,4 @@ AWS_DEPLOYMENT_BUCKET=yaz
 
 Original: https://github.com/serverless/examples/tree/master/aws-node-rest-api-with-dynamodb
 
-Modified as a Next app on AWS at the FT.
+Modified as a Next app to work on AWS at the FT.
