@@ -351,6 +351,15 @@ ServerlessDeploymentBucketName: artefacts.ft-next-app-noob-1h7j4i9qtpmi8
 DeleteLambdaFunctionArn: arn:aws:lambda:eu-west-1:371548805176:function:ft-next-app-noob-dev-delete
 ```
 
+How fantastic! Let's `cURL` one of the functions:
+
+```
+$ curl https://llzjg0qnl1.execute-api.eu-west-1.amazonaws.com/dev/todos
+[]
+```
+
+which is the empty list.
+
 # Update or delete it all
 
 The deployment is completely managed ("Infrastructure as Code") and so it's just as easy to update (by running `make deploy` again) and to delete:
