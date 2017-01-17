@@ -55,7 +55,6 @@ resources:
   Resources:
     TodosDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
           -
