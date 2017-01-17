@@ -10,21 +10,34 @@ What better way to introduce than to create, deploy and update a full-blown serv
 
 Pick one example from [the collection of Serverless examples](https://github.com/serverless/examples). OMG!
 
-What? Oh alright. The biggest one. REST API with DynamoDB!
+What? Oh alright. The biggest one. REST API with DynamoDB!  This example lets you create, retrieve, update and delete "todos". A common denominator of apps. :-)
 
 ```sh
 git clone git@github.com:serverless/examples
 mv examples serverless-examples
 cd serverless-examples/aws-node-rest-api-with-dynamodb
 ```
+
+Note that there's a directory called "todos":
+
+```
+todos
+ | create.js
+ | delete.js
+ | get.js
+ | list.js
+ | update.js
+```
+
 ### Impatient?
 
 ```sh
 git clone git@github.com:financial-times/next-serverless-example
 cd next-serverless-example
+make install
 ```
 
-and skip to [Keys, role & deployment bucket](#keys-role--deployment-bucket). Whoooo.
+and skip to [Deploy it](#deploy-it). Whoooo.
 
 # FT-ify and Next-ify the example
 
@@ -32,14 +45,14 @@ Righto. We need to make some tweaks to get it to work in the FT.
 
 ## serverless.yml
 
-Make the following changes in the `serverless.yml` (replace `noob` with a random - and more respected - name):
+Make the following changes in the `serverless.yml`:
 
 ```diff
 -service: serverless-rest-api-with-dynamodb
 +service: ft-next-app-noob
 ```
 
-which is the "prefix" name for all the resources it creates in the cloud. Now...
+You will need to make up a unique (and more respected) system code to replace `ft-next-app-noob` with.  It needs to start with `ft-next-` and end with a name of your choosing.  This will be the "prefix" name for all the resources it creates in the cloud.  Now...
 
 ```diff
 -  iamRoleStatements:
