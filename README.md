@@ -88,7 +88,7 @@ To avoid hardcoding the table name in the different functions, we'll create the 
 
 Back in `serverless.yml`, update the DynamoDB table definition:
 
-```
+```diff
 -        TableName: 'todos'
 +        TableName: ft-next-app-noob_${opt:stage}_todos
 ```
