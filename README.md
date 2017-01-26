@@ -55,6 +55,9 @@ Make the following changes in the `serverless.yml`:
 You will need to make up a unique (and more respected) system code to replace `ft-next-app-noob` with.  It needs to start with `ft-next-` and end with a name of your choosing.  This will be the "prefix" name for all the resources it creates in the cloud.  Now...
 
 ```diff
+ provider:
+   name: aws
+   runtime: nodejs4.3
 -  iamRoleStatements:
 -    - Effect: Allow
 -      Action:
