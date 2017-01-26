@@ -76,7 +76,7 @@ Following that:
 
 ```diff
 +  environment:
-+    TODOS_TABLE_NAME: ft-next-app-noob-${opt:stage}_todos
++    TODOS_TABLE_NAME: ft-next-app-noob_${opt:stage}_todos
 ```
 
 To avoid hardcoding the table name in the different functions, we'll create the environment variable and use it.  So, in `todos/(create|delete|get|list).js` files:
