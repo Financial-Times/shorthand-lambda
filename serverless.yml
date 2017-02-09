@@ -1,4 +1,4 @@
-service: ft-next-app-noob
+service: ft-commercial-content
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
@@ -7,67 +7,72 @@ provider:
   runtime: nodejs4.3
   role: ${env:AWS_ROLE}
   deploymentBucket: ${env:AWS_DEPLOYMENT_BUCKET}
-  environment:
-    TODOS_TABLE_NAME: ft-next-app-noob_${opt:stage}_todos
+  # environment:
+  #   TODOS_TABLE_NAME: ft-commercial-content_${opt:stage}_todos
 
 functions:
-  create:
-    handler: todos/create.create
+  imageservice:
+    handler: commercial-content/imageservice.addUrls
     events:
-      - http:
-          path: todos
-          method: post
-          cors: true
+      - s3:
+        bucket:
+  # create:
+  #   handler: todos/create.create
+  #   events:
+  #     - http:
+  #         path: todos
+  #         method: post
+  #         cors: true
+  #
+  # list:
+  #   handler: todos/list.list
+  #   events:
+  #     - http:
+  #         path: todos
+  #         method: get
+  #         cors: true
+  #
+  # get:
+  #   handler: todos/get.get
+  #   events:
+  #     - http:
+  #         path: todos/{id}
+  #         method: get
+  #         cors: true
+  #
+  # update:
+  #   handler: todos/update.update
+  #   events:
+  #     - http:
+  #         path: todos/{id}
+  #         method: put
+  #         cors: true
+  #
+  # delete:
+  #   handler: todos/delete.delete
+  #   events:
+  #     - http:
+  #         path: todos/{id}
+  #         method: delete
+  #         cors: true
 
-  list:
-    handler: todos/list.list
-    events:
-      - http:
-          path: todos
-          method: get
-          cors: true
-
-  get:
-    handler: todos/get.get
-    events:
-      - http:
-          path: todos/{id}
-          method: get
-          cors: true
-
-  update:
-    handler: todos/update.update
-    events:
-      - http:
-          path: todos/{id}
-          method: put
-          cors: true
-
-  delete:
-    handler: todos/delete.delete
-    events:
-      - http:
-          path: todos/{id}
-          method: delete
-          cors: true
-
-resources:
-  Resources:
-    TodosDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
-      Properties:
-        AttributeDefinitions:
-          -
-            AttributeName: id
-            AttributeType: S
-        KeySchema:
-          -
-            AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: ft-next-app-noob_${opt:stage}_todos
+# resources:
+#   Resources:
+#     TodosDynamoDbTable:
+#       Type: 'AWS::DynamoDB::Table'
+#       Properties:
+#         AttributeDefinitions:
+#           -
+#             AttributeName: id
+#             AttributeType: S
+#         KeySchema:
+#           -
+#             AttributeName: id
+#             KeyType: HASH
+#         ProvisionedThroughput:
+#           ReadCapacityUnits: 1
+#           WriteCapacityUnits: 1
+#         TableName: ft-next-app-noob_${opt:stage}_todos
 
 package:
   exclude:
