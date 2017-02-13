@@ -4,13 +4,13 @@
 const { readFileSync } = require('fs');
 const { resolve } = require('path');
 const chai = require('chai');
-chai.use(require('sinon-chai'));
-const expect = chai.expect;
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 const cheerio = require('cheerio');
+chai.use(require('sinon-chai'));
 
-const fixture = readFileSync(resolve(__dirname, '..', 'test-fixtures', 'index.html'), {encoding: 'utf8'});
+const expect = chai.expect;
+const fixture = readFileSync(resolve(__dirname, '..', 'test-fixtures', 'index.html'), { encoding: 'utf8' });
 const fixtureEvent = require(resolve(__dirname, '..', 'test-fixtures', 'test-event.json'));
 
 const axiosStub = {
@@ -28,7 +28,7 @@ const endpointURI = `http://${bucketName}.s3-website-${bucketRegion}.amazonaws.c
 describe('comments.addComments', () => {
   it('adds comments snippet before closing html tag', (done) => {
     const ctx = {
-      success: (result) => {
+      success: result => {
         const $ = cheerio.load(result);
 
         expect(axiosStub.get).to.have.been.calledOnce;
