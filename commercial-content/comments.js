@@ -20,20 +20,19 @@ module.exports.addComments = (event, context) => {
     <style>.comment-header{position:static !important;}</style>
     <!-- END O-COMMENTS -->
 `;
- let testSnippet = `<h1>test</h1>`;
+ let testSnippet = `<h1 id="comments">test</h1>`;
 
   axios.get(endpoint)
     .then(body => {
        let $ = cheerio.load(body);
        $( 'body' ).append(testSnippet);
+         console.log($('#comments').text());
       // Assuming data contains the HTML body...
 
       // Pass 1: change relative URLs to image service
 
-
       // Pass 2: change absolute AWS paths to image service
       // const pass2 = pass1.replace(absoluteAwsRegex, replaceAbsolute);
-
       context.success($.html());
     })
     .catch(console.error);
