@@ -20,7 +20,8 @@ describe('tests for the Utils module', () => {
 
       const result = utils.getUUID(fixture);
 
-      expect(result).to.be.a.string;
+      expect(result).to.be.a('string');
+      expect(result).to.equal('0fb9fc9ff28bec1a871d387c3e788209');
     });
   });
 });
