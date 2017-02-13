@@ -11,11 +11,15 @@ chai.use(require('sinon-chai'));
 
 const expect = chai.expect;
 const fixture = readFileSync(resolve(__dirname, '..', 'test-fixtures', 'index.html'), { encoding: 'utf8' });
-const fixtureEvent = require(resolve(__dirname, '..', 'test-fixtures', 'test-event.json'));
+const fixtureEvent = JSON.parse(
+  readFileSync(resolve(__dirname, '..', 'test-fixtures', 'test-event.json'),
+  { encoding: 'utf8' })
+);
 
 const axiosStub = {
   get: sinon.stub().returns(Promise.resolve(fixture)),
 };
+
 const imageService = proxyquire('./imageservice', {
   axios: axiosStub,
 });

@@ -25,7 +25,7 @@ const bucketName = 'test-bucket';
 const bucketRegion = 'test-region';
 const endpointURI = `http://${bucketName}.s3-website-${bucketRegion}.amazonaws.com`;
 
-describe('comments.addComments', () => {
+xdescribe('comments.addComments', () => {
   it('adds comments snippet before closing html tag', (done) => {
     const ctx = {
       success: result => {
