@@ -11,7 +11,10 @@ chai.use(require('sinon-chai'));
 
 const expect = chai.expect;
 const fixture = readFileSync(resolve(__dirname, '..', 'test-fixtures', 'index.html'), { encoding: 'utf8' });
-const fixtureEvent = require(resolve(__dirname, '..', 'test-fixtures', 'test-event.json'));
+const fixtureEvent = JSON.parse(
+  readFileSync(resolve(__dirname, '..', 'test-fixtures', 'test-event.json'),
+  { encoding: 'utf8' })
+);
 
 const axiosStub = {
   get: sinon.stub().returns(Promise.resolve(fixture)),
@@ -25,13 +28,12 @@ const bucketName = 'test-bucket';
 const bucketRegion = 'test-region';
 const endpointURI = `http://${bucketName}.s3-website-${bucketRegion}.amazonaws.com`;
 
-xdescribe('comments.addComments', () => {
+describe('comments.addComments', () => {
   it('adds comments snippet before closing html tag', (done) => {
     const ctx = {
       success: result => {
         const $ = cheerio.load(result);
-
-        expect(axiosStub.get).to.have.been.calledOnce;
+        expect($('#comments').text()).to.equal('test');
         done();
       },
     };
