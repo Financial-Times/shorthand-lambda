@@ -16,7 +16,7 @@ const fixtureEvent = require(resolve(__dirname, '..', 'test-fixtures', 'test-eve
 const axiosStub = {
   get: sinon.stub().returns(Promise.resolve(fixture)),
 };
-const imageService = proxyquire('./imageservice', {
+const comments = proxyquire('./comments', {
   'axios': axiosStub,
 });
 
@@ -26,31 +26,20 @@ const bucketRegion = 'test-region';
 const endpointURI = `http://${bucketName}.s3-website-${bucketRegion}.amazonaws.com`;
 
 describe('comments.addComments', () => {
-  it('replaces relative URLs with image service URLs', (done) => {
+  it('adds comments snippet before closing html tag', (done) => {
     const ctx = {
       success: (result) => {
         const $ = cheerio.load(result);
-        const testUrls = [
-          './media/shorthand-logo-horizonal_ur0ijsl.png',
-          './media/flying_gull-mr.jpg',
-        ];
 
         expect(axiosStub.get).to.have.been.calledOnce;
-
-        for (let i = 0; i < testUrls.length; i++) {
-          const modifiedOriginal = encodeURIComponent(`${endpointURI}${testUrls[i].substr(1)}`);
-          const resultLink = `https://www.ft.com/__origami/service/image/v2/images/raw${modifiedOriginal}?source=commercial-content-lambda`;
-          expect($(`[src="${resultLink}"]`)).to.not.be.empty;
-        };
-
         done();
       },
     };
 
-    imageService.addUrls(fixtureEvent, ctx);
+    comments.addComments(fixtureEvent, ctx);
   });
 
-  xit('replaces Amazon S3 URLs with Image Service URLs', () => {
+  xit('comments snippet has been added before closing html-tag', () => {
 
   });
 });
