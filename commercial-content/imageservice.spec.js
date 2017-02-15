@@ -7,6 +7,7 @@ const chai = require('chai');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 const cheerio = require('cheerio');
+const axios = require('axios');
 chai.use(require('sinon-chai'));
 
 const expect = chai.expect;
@@ -31,27 +32,21 @@ const endpointURI = `http://${bucketName}.s3-website-${bucketRegion}.amazonaws.c
 
 describe('imageservice.addUrls', () => {
   it('replaces relative URLs with image service URLs', done => {
-    const ctx = {
-      success: result => {
-        const $ = cheerio.load(result);
-        const testUrls = [
-          './media/shorthand-logo-horizonal_ur0ijsl.png',
-          './media/flying_gull-mr.jpg',
-        ];
 
-        expect(axiosStub.get).to.have.been.calledOnce;
+  //const $ = cheerio.load(fixture);
+  const body = axios.get(fixture).then(imageService);
+  const $ = cheerio.load(body);
+  const testUrls = [
+    './media/shorthand-logo-horizonal_ur0ijsl.png',
+    './media/flying_gull-mr.jpg',
+  ];
 
-        for (let i = 0; i < testUrls.length; i++) {
-          const modifiedOriginal = encodeURIComponent(`${endpointURI}${testUrls[i].substr(1)}`);
-          const resultLink = `https://www.ft.com/__origami/service/image/v2/images/raw${modifiedOriginal}?source=commercial-content-lambda`;
-          expect($(`[src="${resultLink}"]`)).to.not.be.empty;
-        }
-
-        done();
-      },
-    };
-
-    imageService.addUrls(fixtureEvent, ctx);
+  for (let i = 0; i < testUrls.length; i++) {
+    const modifiedOriginal = encodeURIComponent(`${endpointURI}${testUrls[i].substr(1)}`);
+    const resultLink = `https://www.ft.com/__origami/service/image/v2/images/raw${modifiedOriginal}?source=commercial-content-lambda`;
+    expect($(`[src="${resultLink}"]`)).to.not.be.empty;
+  }
+  done();
   });
 
   xit('replaces Amazon S3 URLs with Image Service URLs', () => {
