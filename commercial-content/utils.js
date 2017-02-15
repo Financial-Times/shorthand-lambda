@@ -2,9 +2,16 @@
  * Utils library for shorthand-lambda
  */
 
-const cheerio = require('cheerio');
+/**
+ * Return UUID from news_keywords meta tag
+ * @param  {Cheerio} $ Parsed Cheerio DOM
+ * @return {string}   UUID string
+ */
+module.exports.getUUID = $ =>
+  $('[name="news_keywords"]').attr('content').match(/UUID:([\w-]+)/).pop();
 
-module.exports.getUUID = html => {
-  const $ = cheerio.load(html);
-  return $('[name="news_keywords"]').attr('content').match(/UUID:([\w-]+)/).pop();
-};
+/**
+ * Deploy resulting file to final path
+ * @return {url} URL to deployed file
+ */
+module.exports.deploy = () => '@TODO'; // @TODO
