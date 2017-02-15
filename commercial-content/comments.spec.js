@@ -33,8 +33,10 @@ describe('comments.addComments', () => {
     const ctx = {
       success: result => {
         const $ = cheerio.load(result);
-        expect($('#comments').text()).to.equal('test');
+        expect($('#comments').is('div')).to.be.true;
+        expect($('#comments').attr('data-o-comments-config-articleid')).to.have.string('0fb9fc9ff28bec1a871d387c3e788209');
         done();
+        expect($('#comments').attr('comments-config-title')).to.have.string('Demo story');
       },
     };
 
