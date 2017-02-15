@@ -7,7 +7,7 @@ const { resolve } = require('path');
 const chai = require('chai');
 chai.use(require('sinon-chai'));
 const utils = require('./utils');
-
+const cheerio = require('cheerio');
 const expect = chai.expect;
 
 describe('tests for the Utils module', () => {
@@ -18,7 +18,7 @@ describe('tests for the Utils module', () => {
         { encoding: 'utf8' }
       );
 
-      const result = utils.getUUID(fixture);
+      const result = utils.getUUID(cheerio.load(fixture));
 
       expect(result).to.be.a('string');
       expect(result).to.equal('0fb9fc9ff28bec1a871d387c3e788209');
