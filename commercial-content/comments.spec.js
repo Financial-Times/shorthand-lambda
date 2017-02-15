@@ -35,8 +35,8 @@ describe('comments.addComments', () => {
         const $ = cheerio.load(result);
         expect($('#comments').is('div')).to.be.true;
         expect($('#comments').attr('data-o-comments-config-articleid')).to.have.string('0fb9fc9ff28bec1a871d387c3e788209');
+        expect($('#comments').attr('data-o-comments-config-title')).to.have.string('Demo story');
         done();
-        expect($('#comments').attr('comments-config-title')).to.have.string('Demo story');
       },
     };
 
