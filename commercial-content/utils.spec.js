@@ -4,10 +4,12 @@
 
 const { readFileSync } = require('fs');
 const { resolve } = require('path');
+const cheerio = require('cheerio');
 const chai = require('chai');
 chai.use(require('sinon-chai'));
+
 const utils = require('./utils');
-const cheerio = require('cheerio');
+
 const expect = chai.expect;
 
 describe('tests for the Utils module', () => {

@@ -11,25 +11,20 @@ chai.use(require('sinon-chai'));
 
 const expect = chai.expect;
 const fixture = readFileSync(resolve(__dirname, '..', 'test-fixtures', 'index.html'), { encoding: 'utf8' });
-const fixtureEvent = JSON.parse(
-  readFileSync(resolve(__dirname, '..', 'test-fixtures', 'test-event.json'),
-  { encoding: 'utf8' })
-);
-
 const axiosStub = {
   get: sinon.stub().returns(Promise.resolve(fixture)),
 };
 const comments = proxyquire('./comments', {
-  'axios': axiosStub,
+  axios: axiosStub,
 });
 
 let $ = cheerio.load(fixture);
 describe('comments', () => {
-  it('adds comments snippet before closing html tag', (done) => {
-        comments($, '0fb9fc9ff28bec1a871d387c3e788209');
-        expect($('#comments').is('div')).to.be.true;
-        expect($('#comments').attr('data-o-comments-config-articleid')).to.have.string('0fb9fc9ff28bec1a871d387c3e788209');
-        expect($('#comments').attr('data-o-comments-config-title')).to.have.string('Demo story');
+  it('adds comments snippet before closing html tag', done => {
+    comments($, '0fb9fc9ff28bec1a871d387c3e788209');
+    expect($('#comments').is('div')).to.be.true;
+    expect($('#comments').attr('data-o-comments-config-articleid')).to.have.string('0fb9fc9ff28bec1a871d387c3e788209');
+    expect($('#comments').attr('data-o-comments-config-title')).to.have.string('Demo story');
     done();
   });
 

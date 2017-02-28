@@ -14,4 +14,4 @@ module.exports.getUUID = $ =>
  * Deploy resulting file to final path
  * @return {url} URL to deployed file
  */
-module.exports.deploy = () => '@TODO'; // @TODO
+module.exports.deploy = () => Promise.resolve(true); // @TODO

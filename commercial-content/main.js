@@ -20,13 +20,20 @@ module.exports.main = (event, context, cb) => {
 
     if (uuid) { // Editorial project
       const withComments = comments($);
+
       // rest of editorial pipeline...
-      const url = utils.deploy(item, withComments.html());
-      cb(null, `Deployed to ${url}`);
+      utils.deploy(item, withComments.html())
+        .then(url => {
+          cb(null, `Deployed to ${url}`);
+        })
+        .catch(console.error);
     } else { // Commercial Content
       // rest of commercial content pipeline...
-      const url = utils.deploy(item, $.html());
-      cb(null, `Deployed to ${url}`);
+      utils.deploy(item, $.html())
+        .then(url => {
+          cb(null, `Deployed to ${url}`);
+        })
+        .catch(console.error);
     }
   }
 
