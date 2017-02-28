@@ -9,7 +9,7 @@ const comments = require('./comments');
 const imageservice = require('./imageservice');
 const utils = require('./utils');
 
-module.exports.main = (event, context, cb) => {
+module.exports = (event, context, cb) => {
   const item = event.Records.shift(); // Take first item in event; should only be one per event!
 
   function pipeline(body) {
@@ -43,7 +43,6 @@ module.exports.main = (event, context, cb) => {
   const key = item.s3.object.key;
   const endpoint = `http://${bucketname}.s3-website-${bucketRegion}.amazonaws.com/${key}`;
 
-  if (extname(key) !== '.html') return cb();
-
-  axios.get(endpoint).then(pipeline).catch(console.error);
+  if (extname(key) === '.html') axios.get(endpoint).then(pipeline).catch(console.error);
+  else utils.deployAsset(key).then(url => cb(null, `Deployed asset to ${url}`)).catch(console.error);
 };
