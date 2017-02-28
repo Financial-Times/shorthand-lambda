@@ -1,15 +1,15 @@
 {
   "name": "ft-shorthand-lambda",
   "version": "1.0.0",
-  "description": "Lambda functions for decorating Shorthand articles",
+  "description": "Lambda functions for decorating Shorthand & Ceros articles",
   "authors": [
     "Andrew Georgiou",
     "Ændrew Rininsland"
   ],
   "license": "MIT",
   "scripts": {
-    "test": "xo && mocha commercial-content/**/*.spec.js",
-    "test:watch": "mocha -w commercial-content/**/*.spec.js"
+    "test": "xo && mocha shorthand-ceros/**/*.spec.js",
+    "test:watch": "mocha -w shorthand-ceros/**/*.spec.js"
   },
   "xo": {
     "rules": {
