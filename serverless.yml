@@ -21,7 +21,7 @@ provider:
 
 functions:
   main:
-    handler: shorthand-ceros/main
+    handler: shorthand-ceros/main.main
     events:
       - s3:
         bucket: ft-shorthand-staging

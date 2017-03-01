@@ -9,7 +9,7 @@ const comments = require('./comments');
 const imageservice = require('./imageservice');
 const utils = require('./utils');
 
-module.exports = (event, context, cb) => {
+module.exports.main = (event, context, cb) => {
   const item = event.Records.shift(); // Take first item in event; should only be one per event!
 
   function pipeline(body) {
