@@ -3,7 +3,8 @@
  */
 
 const extname = require('path').extname;
-const axios = require('axios');
+const S3 = require('aws-sdk').S3;
+const client = new S3();
 const cheerio = require('cheerio');
 const comments = require('./comments');
 const imageservice = require('./imageservice');
@@ -43,6 +44,14 @@ module.exports.main = (event, context, cb) => {
   const key = item.s3.object.key;
   const endpoint = `http://${bucketname}.s3-website-${bucketRegion}.amazonaws.com/${key}`;
 
-  if (extname(key) === '.html') axios.get(endpoint).then(pipeline).catch(console.error);
+  if (extname(key) === '.html'){
+    client.getObject({
+      Bucket: bucketname,
+      Key: key
+    }, (err, data) => {
+      if (err) cb(err);
+      else pipeline(data);
+    });
+  }
   else utils.deployAsset(key).then(url => cb(null, `Deployed asset to ${url}`)).catch(console.error);
 };
