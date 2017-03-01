@@ -32,7 +32,7 @@
     "space": true
   },
   "dependencies": {
-    "aws-sdk": "^2.6.7",
+    "aws-sdk": "^2.22.0",
     "axios": "^0.15.3",
     "cheerio": "^0.22.0",
     "uuid": "^2.0.3"
@@ -42,7 +42,8 @@
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
     "proxyquire": "^1.7.11",
-    "serverless": "^1.7.0",
+    "serverless": "^1.6.1",
+    "serverless-external-s3-event": "^1.0.4",
     "sinon": "^1.17.7",
     "sinon-chai": "^2.8.0",
     "xo": "^0.17.1"

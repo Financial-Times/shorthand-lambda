@@ -6,6 +6,14 @@ provider:
   name: aws
   runtime: nodejs4.3
   role: ${env:AWS_ROLE}
+  iamRoleStatements:
+    -  Effect: "Allow"
+       Action:
+         - "s3:PutBucketNotification"
+       Resource:
+         Fn::Join:
+           - ""
+           - - "arn:aws:s3:::ft-shorthand-staging"
   deploymentBucket: ${env:AWS_DEPLOYMENT_BUCKET}
   environment:
     DEST_BUCKET: ${env:AWS_PROD_BUCKET}
@@ -22,3 +30,6 @@ functions:
 package:
   exclude:
     - node_modules/serverless/**
+
+plugins:
+ - serverless-external-s3-event
