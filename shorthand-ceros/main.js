@@ -47,12 +47,11 @@ module.exports.main = (event, context, cb) => {
     console.log('getting HTML file');
     const client = new S3({
       apiVersion: '2006-03-01',
-      region: 'eu-west-1',
+      region: bucketRegion,
     });
 
     client.getObject({
       Bucket: bucketname,
-      Region: bucketRegion,
       Key: key
     }, (err, data) => {
       if (err) {
