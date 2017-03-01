@@ -4,7 +4,10 @@
 
 const S3 = require('aws-sdk').S3;
 
-const client = new S3();
+const client = new S3({
+  apiVersion: '2006-03-01',
+  region: 'eu-west-1',
+});
 
 /**
  * Return UUID from news_keywords meta tag

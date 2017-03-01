@@ -4,7 +4,6 @@
 
 const extname = require('path').extname;
 const S3 = require('aws-sdk').S3;
-const client = new S3();
 const cheerio = require('cheerio');
 const comments = require('./comments');
 const imageservice = require('./imageservice');
@@ -20,6 +19,7 @@ module.exports.main = (event, context, cb) => {
     const uuid = utils.getUUID($);
 
     if (uuid) { // Editorial project
+      console.log('editorial project!');
       const withComments = comments($);
 
       // rest of editorial pipeline...
@@ -42,16 +42,28 @@ module.exports.main = (event, context, cb) => {
   const bucketname = item.s3.bucket.name;
   const bucketRegion = item.awsRegion;
   const key = item.s3.object.key;
-  const endpoint = `http://${bucketname}.s3-website-${bucketRegion}.amazonaws.com/${key}`;
 
-  if (extname(key) === '.html'){
+  if (extname(key) === '.html') {
+    console.log('getting HTML file');
+    const client = new S3({
+      apiVersion: '2006-03-01',
+      region: 'eu-west-1',
+    });
+
     client.getObject({
       Bucket: bucketname,
+      Region: bucketRegion,
       Key: key
     }, (err, data) => {
-      if (err) cb(err);
-      else pipeline(data);
+      if (err) {
+        console.log('getObject error');
+        cb(err);
+      } else {
+        console.log('into pipeline');
+        pipeline(data);
+      }
     });
+  } else {
+    utils.deployAsset(key).then(url => cb(null, `Deployed asset to ${url}`)).catch(console.error);
   }
-  else utils.deployAsset(key).then(url => cb(null, `Deployed asset to ${url}`)).catch(console.error);
 };
