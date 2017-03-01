@@ -7,6 +7,9 @@ const S3 = require('aws-sdk').S3;
 const client = new S3({
   apiVersion: '2006-03-01',
   region: 'eu-west-1',
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  sessionToken: process.env.AWS_SESSION_TOKEN,
 });
 
 /**
