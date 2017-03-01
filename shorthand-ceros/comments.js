@@ -1,5 +1,6 @@
 module.exports = ($, uuid) => {
   var headline = $('title').text();
+  console.log(headline);
   var commentsSnippet = `
      <!-- O-COMMENTS -->
      <div id="comments" style="max-width:800px;margin: 0 auto;"
@@ -13,5 +14,6 @@ module.exports = ($, uuid) => {
      <!-- END O-COMMENTS -->
   `;
   $('body').append(commentsSnippet);
+  console.log('after append');
   return $;
 };

@@ -10,9 +10,8 @@ const imageservice = require('./imageservice');
 const utils = require('./utils');
 
 module.exports.main = (event, context, cb) => {
-  const item = event.Records.shift(); // Take first item in event; should only be one per event!
-
-  function pipeline(body) {
+  function pipeline(body, item) {
+    console.dir(item);
     if (!body) return cb('Empty HTML document');
     const withImageService = imageservice(body); // Needs to be before creating Cheerio object.
     const $ = cheerio.load(withImageService);
@@ -23,11 +22,16 @@ module.exports.main = (event, context, cb) => {
       const withComments = comments($);
 
       // rest of editorial pipeline...
+      console.log('out of comment');
       utils.deploy(item, withComments.html())
         .then(url => {
           cb(null, `Deployed to ${url}`);
         })
-        .catch(console.error);
+        .catch(err => {
+          console.error('in deploy catch');
+          console.error(err);
+          cb(err);
+        });
     } else { // Commercial Content
       // rest of commercial content pipeline...
       utils.deploy(item, $.html())
@@ -39,6 +43,7 @@ module.exports.main = (event, context, cb) => {
   }
 
   // Construct URL from event parts
+  const item = event.Records.shift(); // Take first item in event; should only be one per event!
   const bucketname = item.s3.bucket.name;
   const bucketRegion = item.awsRegion;
   const key = item.s3.object.key;
@@ -62,7 +67,7 @@ module.exports.main = (event, context, cb) => {
         cb(err);
       } else {
         console.log('into pipeline');
-        pipeline(data);
+        pipeline(data.Body.toString(), item);
       }
     });
   } else {

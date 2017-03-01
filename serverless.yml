@@ -17,7 +17,6 @@ provider:
   deploymentBucket: ${env:AWS_DEPLOYMENT_BUCKET}
   environment:
     DEST_BUCKET: ${env:AWS_PROD_BUCKET}
-    SOURCE_BUCKET: ${env:AWS_STAGING_BUCKET}
 
 functions:
   main:

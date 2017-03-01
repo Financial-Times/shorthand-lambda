@@ -24,7 +24,7 @@ module.exports.getUUID = $ =>
  * Deploy resulting file to final path
  * @return {url} URL to deployed file
  */
-module.exports.deploy = (Body, item) => new Promise((resolve, reject) => {
+module.exports.deploy = (item, Body) => new Promise((resolve, reject) => {
   client.putObject({
     Bucket: process.env.DEST_BUCKET,
     Key: item.s3.object.key,
