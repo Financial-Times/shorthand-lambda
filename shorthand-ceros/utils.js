@@ -2,7 +2,7 @@
  * Utils library for shorthand-lambda
  */
 
-const { S3 } = require('aws');
+const S3 = require('aws-sdk').S3;
 
 const client = new S3();
 

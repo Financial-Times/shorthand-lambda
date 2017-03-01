@@ -1,6 +1,6 @@
 module.exports = ($, uuid) => {
-  let headline = $('title').text();
-  let commentsSnippet = `
+  var headline = $('title').text();
+  var commentsSnippet = `
      <!-- O-COMMENTS -->
      <div id="comments" style="max-width:800px;margin: 0 auto;"
            data-o-component="o-comments" data-o-comments-config-title="${headline}"

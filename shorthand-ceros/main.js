@@ -2,7 +2,7 @@
  * Main pipeline for Shorthand Lambda scripts
  */
 
-const { extname } = require('path');
+const extname = require('path').extname;
 const axios = require('axios');
 const cheerio = require('cheerio');
 const comments = require('./comments');
