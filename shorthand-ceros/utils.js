@@ -29,6 +29,7 @@ module.exports.deploy = (item, Body) => new Promise((resolve, reject) => {
     Bucket: process.env.DEST_BUCKET,
     Key: item.s3.object.key,
     ACL: 'public-read',
+    ContentType: 'text/html',
     Body,
   }, (err, data) => {
     console.dir(data);
