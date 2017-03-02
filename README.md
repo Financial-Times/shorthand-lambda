@@ -3,7 +3,6 @@
 
 > Serverless project for deploying Shorthand and Ceros content
 
-
 This is a Serverless project leveraging AWS Lambda and S3.
 It is based off [Ben Fletcher][1]'s excellent *[next-serverless-example][2]*.
 Use that for help [generating policies[3] and whathaveyounot.
@@ -23,12 +22,9 @@ Use that for help [generating policies[3] and whathaveyounot.
   AWS_SECRET_ACCESS_KEY=<AWS Secret Access Key>
   AWS_ROLE=arn:aws:iam::<Lambda's account ID>:role/<Lambda role>
   AWS_DEPLOYMENT_BUCKET=<artefacts bucket>
-
-  AWS_STAGING_BUCKET=ft-shorthand
-  AWS_PROD_BUCKET=ft-shorthand-prod
-  AWS_PROD_BUCKET_REGION=eu-west
-  AWS_PROD_BUCKET_ACCESS_KEY_ID
-  AWS_PROD_BUCKET_SECRET_ACCESS_KEY=sj
+  AWS_STAGING_BUCKET=<staging bucket name>
+  AWS_PROD_BUCKET=<production bucket name>
+  AWS_PROD_BUCKET_REGION=<production bucket region>
   ```
 
 3. Deploy!
