@@ -7,41 +7,51 @@ const S3 = require('aws-sdk').S3;
 const cheerio = require('cheerio');
 const comments = require('./comments');
 const imageservice = require('./imageservice');
+const oTracking = require('./o-tracking');
 const utils = require('./utils');
 
-module.exports.main = (event, context, cb) => {
-  function pipeline(body, item) {
-    console.dir(item);
-    if (!body) return cb('Empty HTML document');
-    const withImageService = imageservice(body); // Needs to be before creating Cheerio object.
-    const $ = cheerio.load(withImageService);
-    const uuid = utils.getUUID($);
+/**
+ * Pipeline for modifying HTML documents
+ * @param  {string} body Unprocessed DOM as string
+ * @param  {object} item Item from Lambda S3 event
+ * @return {void}        Calls Lambda callback; returns void.
+ */
+function pipeline(body, item, cb) {
+  if (!body) return cb('Empty HTML document');
+  const withImageService = imageservice(body); // Needs to be before creating Cheerio object.
 
-    if (uuid) { // Editorial project
-      console.log('editorial project!');
-      const withComments = comments($);
+  const $ = cheerio.load(withImageService);
+  const uuid = utils.getUUID($);
 
-      // rest of editorial pipeline...
-      console.log('out of comment');
-      utils.deploy(item, withComments.html())
-        .then(url => {
-          cb(null, `Deployed to ${url}`);
-        })
-        .catch(err => {
-          console.error('in deploy catch');
-          console.error(err);
-          cb(err);
-        });
-    } else { // Commercial Content
-      // rest of commercial content pipeline...
-      utils.deploy(item, $.html())
-        .then(url => {
-          cb(null, `Deployed`);
-        })
-        .catch(console.error);
-    }
+  if (uuid) { // Editorial project
+    const withComments = comments($);
+    const withTracking = oTracking(withComments);
+    // rest of editorial pipeline...
+    utils.deploy(item, withTracking.html())
+      .then(url => {
+        cb(null, `Deployed to ${url}`);
+      })
+      .catch(err => {
+        cb(err);
+      });
+  } else { // Commercial Content
+    const withTracking = oTracking($);
+    utils.deploy(item, withTracking.html())
+      .then(key => {
+        cb(null, `Deployed to: http://${process.env.DEST_BUCKET}.s3-website-${process.env.DEST_BUCKET_REGION}.amazonaws.com/${key}`);
+      })
+      .catch(console.error);
   }
+}
 
+/**
+ * This is the main Lambda function that does everything
+ * @param  {object}   event   Lambda S3 event
+ * @param  {object}   context Lambda context event
+ * @param  {Function} cb      Lambda callback function
+ * @return {void}
+ */
+module.exports.main = (event, context, cb) => {
   // Construct URL from event parts
   const item = event.Records.shift(); // Take first item in event; should only be one per event!
   const bucketname = item.s3.bucket.name;
@@ -49,13 +59,9 @@ module.exports.main = (event, context, cb) => {
   const key = item.s3.object.key;
 
   if (extname(key) === '.html') {
-    console.log('getting HTML file');
     const client = new S3({
       apiVersion: '2006-03-01',
       region: bucketRegion,
-      // accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      // secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-      // sessionToken: process.env.AWS_SESSION_TOKEN,
     });
 
     client.getObject({
@@ -63,14 +69,16 @@ module.exports.main = (event, context, cb) => {
       Key: key
     }, (err, data) => {
       if (err) {
-        console.log('getObject error');
+        console.log('** getObject error ** ');
         cb(err);
       } else {
-        console.log('into pipeline');
-        pipeline(data.Body.toString(), item);
+        pipeline(data.Body.toString(), item, cb);
       }
     });
   } else {
-    utils.deployAsset(key).then(url => cb(null, `Deployed asset to ${url}`)).catch(console.error);
+    utils
+      .deployAsset(key)
+      .then(key => cb(null, `Deployed to: http://${process.env.DEST_BUCKET}.s3-website-${process.env.DEST_BUCKET_REGION}.amazonaws.com/${key}`))
+      .catch(console.error);
   }
 };

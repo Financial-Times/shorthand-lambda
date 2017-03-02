@@ -4,31 +4,34 @@
 const { readFileSync } = require('fs');
 const { resolve } = require('path');
 const chai = require('chai');
-const sinon = require('sinon');
-const proxyquire = require('proxyquire');
 const cheerio = require('cheerio');
+const comments = require('./comments');
+
 chai.use(require('sinon-chai'));
 
 const expect = chai.expect;
 const fixture = readFileSync(resolve(__dirname, '..', 'test-fixtures', 'index.html'), { encoding: 'utf8' });
-const axiosStub = {
-  get: sinon.stub().returns(Promise.resolve(fixture)),
-};
-const comments = proxyquire('./comments', {
-  axios: axiosStub,
-});
+const UUIDFixture = '0fb9fc9ff28bec1a871d387c3e788209';
 
-let $ = cheerio.load(fixture);
 describe('comments', () => {
-  it('adds comments snippet before closing html tag', done => {
-    comments($, '0fb9fc9ff28bec1a871d387c3e788209');
-    expect($('#comments').is('div')).to.be.true;
-    expect($('#comments').attr('data-o-comments-config-articleid')).to.have.string('0fb9fc9ff28bec1a871d387c3e788209');
-    expect($('#comments').attr('data-o-comments-config-title')).to.have.string('Demo story');
-    done();
+  let $;
+
+  beforeEach(() => {
+    $ = cheerio.load(fixture);
   });
 
-  xit('comments snippet has been added before closing html-tag', () => {
+  it('adds comments snippet before closing html tag', () => {
+    const result = comments($, UUIDFixture);
+    expect(result('#comments').is('div')).to.be.true;
+    expect(result('#comments').attr('data-o-comments-config-articleid')).to.have.string(UUIDFixture);
+    expect(result('#comments').attr('data-o-comments-config-title')).to.have.string('Demo story');
+  });
 
+  it('adds the comment snippet before closing html-tag', () => {
+    const result = comments($, UUIDFixture);
+    const commentNodes = result('body').contents().filter(function () {
+      return this.nodeType === 8;
+    });
+    expect(commentNodes.last().get(0).nodeValue.trim()).to.equal('END O-COMMENTS');
   });
 });

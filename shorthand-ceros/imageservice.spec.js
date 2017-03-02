@@ -4,21 +4,12 @@
 const { readFileSync } = require('fs');
 const { resolve } = require('path');
 const chai = require('chai');
-const sinon = require('sinon');
-const proxyquire = require('proxyquire');
 const cheerio = require('cheerio');
-chai.use(require('sinon-chai'));
 
 const expect = chai.expect;
 const fixture = readFileSync(resolve(__dirname, '..', 'test-fixtures', 'index.html'), { encoding: 'utf8' });
 
-const axiosStub = {
-  get: sinon.stub().returns(Promise.resolve(fixture)),
-};
-
-const imageService = proxyquire('./imageservice', {
-  axios: axiosStub,
-});
+const imageService = require('./imageservice');
 
 const bucketName = 'test-bucket';
 const bucketRegion = 'test-region';
@@ -42,13 +33,12 @@ describe('imageservice.addUrls', () => {
     done();
   });
 
-  /* @TODO add absolute URLs to fixture, fix test */
-  xit('replaces Amazon S3 URLs with Image Service URLs', done => {
+  it('replaces Amazon S3 URLs with Image Service URLs', done => {
     const result = imageService(fixture);
     const $ = cheerio.load(result);
     const testUrls = [
-      './media/shorthand-logo-horizonal_ur0ijsl.png',
-      './media/flying_gull-mr.jpg',
+      'http://ft-ig-content-prod.s3-website-eu-west-1.amazonaws.com/test/static/img/created-with-shorthand.png',
+      'http://ft-ig-content-prod.s3-website-eu-west-1.amazonaws.com/test/static/img/chevron-v1.png',
     ];
 
     for (let i = 0; i < testUrls.length; i++) {

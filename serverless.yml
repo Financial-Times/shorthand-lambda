@@ -16,7 +16,9 @@ provider:
            - - "arn:aws:s3:::ft-shorthand-staging"
   deploymentBucket: ${env:AWS_DEPLOYMENT_BUCKET}
   environment:
+    SOURCE_BUCKET: ${env:AWS_STAGING_BUCKET}
     DEST_BUCKET: ${env:AWS_PROD_BUCKET}
+    DEST_BUCKET_REGION: ${env:AWS_PROD_BUCKET_REGION}
 
 functions:
   main:
