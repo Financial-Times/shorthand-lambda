@@ -36,7 +36,7 @@ module.exports.main = (event, context, cb) => {
       // rest of commercial content pipeline...
       utils.deploy(item, $.html())
         .then(url => {
-          cb(null, `Deployed to ${url}`);
+          cb(null, `Deployed`);
         })
         .catch(console.error);
     }
@@ -53,9 +53,9 @@ module.exports.main = (event, context, cb) => {
     const client = new S3({
       apiVersion: '2006-03-01',
       region: bucketRegion,
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-      sessionToken: process.env.AWS_SESSION_TOKEN,
+      // accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      // secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      // sessionToken: process.env.AWS_SESSION_TOKEN,
     });
 
     client.getObject({

@@ -7,9 +7,9 @@ const S3 = require('aws-sdk').S3;
 const client = new S3({
   apiVersion: '2006-03-01',
   region: 'eu-west-1',
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  sessionToken: process.env.AWS_SESSION_TOKEN,
+  // accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  // secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  // sessionToken: process.env.AWS_SESSION_TOKEN,
 });
 
 /**
@@ -28,8 +28,10 @@ module.exports.deploy = (item, Body) => new Promise((resolve, reject) => {
   client.putObject({
     Bucket: process.env.DEST_BUCKET,
     Key: item.s3.object.key,
+    ACL: 'public-read',
     Body,
   }, (err, data) => {
+    console.dir(data);
     if (err) reject(err);
     else resolve(data);
   });
@@ -43,6 +45,7 @@ module.exports.deployAsset = Key => new Promise((resolve, reject) => {
   client.copyObject({
     Bucket: process.env.DEST_BUCKET,
     Key,
+    ACL: 'public-read',
     CopySource: encodeURIComponent(`${process.env.SOURCE_BUCKET}/${Key}`)
   }, (err, data) => {
     if (err) reject(err);
