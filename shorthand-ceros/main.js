@@ -10,6 +10,9 @@ const imageservice = require('./imageservice');
 const oTracking = require('./o-tracking');
 const utils = require('./utils');
 
+const resultBase = `http://${process.env.DEST_BUCKET}.s3-website-` +
+  `${process.env.DEST_BUCKET_REGION}.amazonaws.com/`;
+
 /**
  * Pipeline for modifying HTML documents
  * @param  {string} body Unprocessed DOM as string
@@ -28,8 +31,8 @@ function pipeline(body, item, cb) {
     const withTracking = oTracking(withComments);
     // rest of editorial pipeline...
     utils.deploy(item, withTracking.html())
-      .then(url => {
-        cb(null, `Deployed to ${url}`);
+      .then(key => {
+        cb(null, `Deployed to: ${resultBase}${key}`);
       })
       .catch(err => {
         cb(err);
@@ -38,7 +41,7 @@ function pipeline(body, item, cb) {
     const withTracking = oTracking($);
     utils.deploy(item, withTracking.html())
       .then(key => {
-        cb(null, `Deployed to: http://${process.env.DEST_BUCKET}.s3-website-${process.env.DEST_BUCKET_REGION}.amazonaws.com/${key}`);
+        cb(null, `Deployed to: ${resultBase}${key}`);
       })
       .catch(console.error);
   }
@@ -69,7 +72,7 @@ module.exports.main = (event, context, cb) => {
       Key: key
     }, (err, data) => {
       if (err) {
-        console.log('** getObject error ** ');
+        console.error('** getObject error **');
         cb(err);
       } else {
         pipeline(data.Body.toString(), item, cb);
@@ -78,7 +81,7 @@ module.exports.main = (event, context, cb) => {
   } else {
     utils
       .deployAsset(key)
-      .then(key => cb(null, `Deployed to: http://${process.env.DEST_BUCKET}.s3-website-${process.env.DEST_BUCKET_REGION}.amazonaws.com/${key}`))
+      .then(key => cb(null, `Deployed to: ${resultBase}${key}`))
       .catch(console.error);
   }
 };

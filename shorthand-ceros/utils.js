@@ -14,8 +14,10 @@ const client = new S3({
  * @param  {Cheerio} $ Parsed Cheerio DOM
  * @return {string}   UUID string
  */
-module.exports.getUUID = $ =>
-  $('[name="news_keywords"]').attr('content').match(/UUID:([\w-]+)/).pop();
+module.exports.getUUID = $ => {
+  const match = $('[name="news_keywords"]').attr('content').match(/UUID:([\w-]+)/);
+  return match ? match.pop() : false;
+};
 
 /**
  * Deploy resulting file to final path
