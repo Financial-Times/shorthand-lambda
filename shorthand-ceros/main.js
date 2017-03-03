@@ -36,16 +36,14 @@ function pipeline(body, item, cb) {
       .then(key => {
         cb(null, `Deployed to: ${resultBase}${key}`);
       })
-      .catch(err => {
-        cb(err);
-      });
+      .catch(cb);
   } else { // Commercial Content
     const withTracking = oTracking($);
     utils.deploy(item, withTracking.html())
       .then(key => {
         cb(null, `Deployed to: ${resultBase}${key}`);
       })
-      .catch(console.error);
+      .catch(cb);
   }
 }
 
@@ -84,6 +82,6 @@ module.exports.main = (event, context, cb) => {
     utils
       .deployAsset(key)
       .then(key => cb(null, `Deployed to: ${resultBase}${key}`))
-      .catch(console.error);
+      .catch(cb);
   }
 };
