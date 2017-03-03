@@ -2,6 +2,8 @@
  * Spec for Main workflow
  */
 
+'use strict';
+
 process.env.DEST_BUCKET = 'dest-bucket';
 process.env.DEST_BUCKET_REGION = 'test-region';
 

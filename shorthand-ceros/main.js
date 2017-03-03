@@ -2,6 +2,8 @@
  * Main pipeline for Shorthand Lambda scripts
  */
 
+'use strict';
+
 const extname = require('path').extname;
 const S3 = require('aws-sdk').S3;
 const cheerio = require('cheerio');
