@@ -17,7 +17,7 @@ const bucketRegion = 'test-region';
 const endpointURI = `http://${bucketName}.s3-website-${bucketRegion}.amazonaws.com`;
 
 describe('imageservice.addUrls', () => {
-  it('replaces relative URLs with image service URLs', done => {
+  it('replaces relative URLs with image service URLs', () => {
     const result = imageService(fixture);
     const $ = cheerio.load(result);
     const testUrls = [
@@ -30,11 +30,9 @@ describe('imageservice.addUrls', () => {
       const resultLink = `https://www.ft.com/__origami/service/image/v2/images/raw${modifiedOriginal}?source=commercial-content-lambda`;
       expect($(`[src="${resultLink}"]`)).to.not.be.empty;
     }
-
-    done();
   });
 
-  it('replaces Amazon S3 URLs with Image Service URLs', done => {
+  it('replaces Amazon S3 URLs with Image Service URLs', () => {
     const result = imageService(fixture);
     const $ = cheerio.load(result);
     const testUrls = [
@@ -47,7 +45,10 @@ describe('imageservice.addUrls', () => {
       const resultLink = `https://www.ft.com/__origami/service/image/v2/images/raw${modifiedOriginal}?source=commercial-content-lambda`;
       expect($(`[src="${resultLink}"]`)).to.not.be.empty;
     }
+  });
 
-    done();
+  it('returns void if no body provided', () => {
+    const result = imageService(null);
+    expect(result).not.to.exist;
   });
 });

@@ -27,9 +27,9 @@ const expect = chai.expect;
 
 describe('tests for the Utils module', () => {
   beforeEach(() => {
-    MockS3.restore();
-    MockS3.prototype.putObject.restore();
-    MockS3.prototype.copyObject.restore();
+    MockS3.reset();
+    MockS3.prototype.putObject.reset();
+    MockS3.prototype.copyObject.reset();
   });
 
   describe('getUUID', () => {
@@ -55,36 +55,65 @@ describe('tests for the Utils module', () => {
       },
     };
 
+    const putArgs = {
+      Bucket: 'dest-bucket',
+      ACL: 'public-read',
+      ContentType: 'text/html',
+      Key: 'test/key.html',
+      Body: 'herpa-derpa',
+    };
+
     it('puts the object on S3', done => {
-      const putArgs = {
-        Bucket: 'dest-bucket',
-        ACL: 'public-read',
-        ContentType: 'text/html',
-        Key: 'test/key.html',
-      };
+      MockS3.prototype.putObject.yields(null, true);
 
       utils.deploy(itemFixture, 'herpa-derpa')
         .then(result => {
-          expect(MockS3.prototype.putObject).withArgs(putArgs).to.have.been.calledOnce;
+          expect(MockS3.prototype.putObject.withArgs(putArgs)).to.have.been.calledOnce;
           expect(result).to.equal('test/key.html');
           done();
-        })
+        });
+    });
+
+    it('rejects promise on error', done => {
+      MockS3.prototype.putObject.yields(new Error('hurrrr'), null);
+
+      utils.deploy(itemFixture, 'herpa-derpa')
         .catch(err => {
-          expect(MockS3.prototype.putObject).withArgs(putArgs)
-            .to.have.been.calledOnce;
-          expect(err).not.to.exist;
+          expect(MockS3.prototype.putObject.withArgs(putArgs)).to.have.been.calledOnce;
+          expect(err).to.eql(new Error('hurrrr'));
           done();
         });
     });
   });
 
   describe('deployAsset', () => {
-    it('copies an asset to S3', done => {
-      utils.deployAsset('test/key.jpg')
-        .then(() => {
+    const copyArgs = {
+      Bucket: 'dest-bucket',
+      Key: 'test/key.jpg',
+      ACL: 'public-read',
+      CopySource: encodeURIComponent('source-bucket/test/key.jpg'),
+    };
 
+    it('copies an asset to S3', done => {
+      MockS3.prototype.copyObject.yields(null, true);
+
+      utils.deployAsset('test/key.jpg')
+        .then(result => {
+          expect(MockS3.prototype.copyObject.withArgs(copyArgs)).to.have.been.calledOnce;
+          expect(result).to.equal('test/key.jpg');
+          done();
         });
-        .catch();
+    });
+
+    it('rejects promise on error', done => {
+      MockS3.prototype.copyObject.yields(new Error('hurrrr'), null);
+
+      utils.deployAsset('test/key.jpg')
+        .catch(err => {
+          expect(MockS3.prototype.copyObject.withArgs(copyArgs)).to.have.been.calledOnce;
+          expect(err).to.eql(new Error('hurrrr'));
+          done();
+        });
     });
   });
 });
