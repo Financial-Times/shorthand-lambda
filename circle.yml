@@ -3,6 +3,10 @@ machine:
   node:
     version: 4.3.2
 
+test:
+  post:
+    - bash <(curl -s https://codecov.io/bash)
+
 deployment:
   lambda:
     branch: master
