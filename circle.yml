@@ -1,0 +1,14 @@
+machine:
+  timezone: Europe/London
+  node:
+    version: 4.3.2
+
+deployment:
+  lambda:
+    branch: master
+    commands:
+      - make deploy
+
+general:
+  artifacts:
+    - coverage
