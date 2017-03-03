@@ -7,7 +7,6 @@
 
 // Templates
 // Taken from https://github.com/Financial-Times/o-tracking#full-example
-
 const ctmStyles = `
   <!-- Add CTM styles -->
   <style type="text/css" id="ctm-styles">

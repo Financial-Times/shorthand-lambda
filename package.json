@@ -8,7 +8,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "test": "xo && nyc mocha shorthand-ceros/**/*.spec.js",
+    "test": "xo && nyc --reporter=lcov mocha shorthand-ceros/**/*.spec.js",
     "test:watch": "mocha -w shorthand-ceros/**/*.spec.js"
   },
   "xo": {
