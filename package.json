@@ -8,7 +8,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "test": "xo && mocha shorthand-ceros/**/*.spec.js",
+    "test": "xo && nyc mocha shorthand-ceros/**/*.spec.js",
     "test:watch": "mocha -w shorthand-ceros/**/*.spec.js"
   },
   "xo": {
@@ -41,6 +41,7 @@
     "aws-lambda-test-utils": "^1.0.2",
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
+    "nyc": "^10.1.2",
     "proxyquire": "^1.7.11",
     "serverless": "^1.6.1",
     "serverless-external-s3-event": "^1.0.4",

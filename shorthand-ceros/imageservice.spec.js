@@ -1,6 +1,7 @@
 /**
  * Spec for Image Service tasks
  */
+
 const { readFileSync } = require('fs');
 const { resolve } = require('path');
 const chai = require('chai');

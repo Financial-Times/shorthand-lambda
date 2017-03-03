@@ -1,6 +1,7 @@
 /**
- * Spec for Adding Comments task
+ * Tests for Comments task
  */
+
 const { readFileSync } = require('fs');
 const { resolve } = require('path');
 const chai = require('chai');
