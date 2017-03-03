@@ -4,9 +4,12 @@
  * @param  {String} uuid  Article UUID from link file
  * @return {Cheerio}      Updated Cheerio DOM object
  */
+
+'use strict';
+
 module.exports = ($, uuid) => {
-  var headline = $('title').text();
-  var commentsSnippet = `
+  const headline = $('title').text();
+  const commentsSnippet = `
   <!-- O-COMMENTS -->
   <div id="comments" style="max-width:800px;margin: 0 auto;"
     data-o-component="o-comments" data-o-comments-config-title="${headline}"

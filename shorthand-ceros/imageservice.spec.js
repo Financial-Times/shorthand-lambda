@@ -2,8 +2,10 @@
  * Spec for Image Service tasks
  */
 
-const { readFileSync } = require('fs');
-const { resolve } = require('path');
+'use strict';
+
+const readFileSync = require('fs').readFileSync;
+const resolve = require('path').resolve;
 const chai = require('chai');
 const cheerio = require('cheerio');
 

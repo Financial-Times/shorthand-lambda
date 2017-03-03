@@ -3,10 +3,12 @@
  * @see http://registry.origami.ft.com/components/o-tracking
  */
 
+'use strict';
+
 // Templates
 // Taken from https://github.com/Financial-Times/o-tracking#full-example
 
-var ctmStyles = `
+const ctmStyles = `
   <!-- Add CTM styles -->
   <style type="text/css" id="ctm-styles">
     /* Hide any enhanced experience content when in core mode, and vice versa. */
@@ -14,7 +16,7 @@ var ctmStyles = `
     .enhanced .o--if-no-js { display: none !important; }
   </style>`;
 
-var ctmScript = `
+const ctmScript = `
   <!-- Add CTM check -->
   <script id="ctm">
       var cutsTheMustard = ('querySelector' in document && 'localStorage' in window && 'addEventListener' in window);
@@ -25,11 +27,11 @@ var ctmScript = `
       }
   </script>`;
 
-var polyfillScript = `
+const polyfillScript = `
   <!-- Add Polyfil service -->
   <script id="polyfill-service" src="https://cdn.polyfill.io/v1/polyfill.min.js"></script>`;
 
-var oTrackingScript = `
+const oTrackingScript = `
   <!-- INIT and make a page request -->
   <script id="o-tracking">
       function otrackinginit() {
@@ -71,7 +73,7 @@ var oTrackingScript = `
       }
   </script>`;
 
-var ctmFallback = `
+const ctmFallback = `
   <!-- Add fallback if browsers don't cut the mustard -->
   <div class="o-tracking o--if-no-js" data-o-component="o-tracking">
     <div style="background:url('https://spoor-api.ft.com/px.gif?data=%7B%22category%22:%22page%22,%20%22action%22:%22view%22,%20%22system%22:%7B%22apiKey%22:%22qUb9maKfKbtpRsdp0p2J7uWxRPGJEP%22,%22source%22:%22o-tracking%22,%22version%22:%221.0.0%22%7D,%22context%22:%7B%22product%22:%22shorthand-ceros%22,%22content%22:%7B%22asset_type%22:%22page%22%7D%7D%7D');"></div>

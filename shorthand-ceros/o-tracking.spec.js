@@ -2,8 +2,10 @@
  * Spec for o-tracking task
  */
 
-const { readFileSync } = require('fs');
-const { resolve } = require('path');
+'use strict';
+
+const readFileSync = require('fs').readFileSync;
+const resolve = require('path').resolve;
 const cheerio = require('cheerio');
 const chai = require('chai');
 const oTracking = require('./o-tracking');
