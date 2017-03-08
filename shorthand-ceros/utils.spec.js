@@ -46,6 +46,28 @@ describe('tests for the Utils module', () => {
       expect(result).to.be.a('string');
       expect(result).to.equal('0fb9fc9ff28bec1a871d387c3e788209');
     });
+
+    it('returns false if no news_keywords attribute found', () => {
+      const fixture = readFileSync(
+        resolve(__dirname, '..', 'test-fixtures', 'index--no-uuid.html'),
+        { encoding: 'utf8' }
+      );
+
+      const result = utils.getUUID(cheerio.load(fixture));
+
+      expect(result).to.be.false;
+    });
+
+    it('returns false if news_keywords attribute empty', () => {
+      const fixture = readFileSync(
+        resolve(__dirname, '..', 'test-fixtures', 'index--empty-uuid.html'),
+        { encoding: 'utf8' }
+      );
+
+      const result = utils.getUUID(cheerio.load(fixture));
+
+      expect(result).to.be.false;
+    });
   });
 
   describe('deploy', () => {

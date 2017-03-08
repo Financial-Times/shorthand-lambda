@@ -12,11 +12,16 @@ const client = new S3({
 /**
  * Return UUID from news_keywords meta tag
  * @param  {Cheerio} $ Parsed Cheerio DOM
- * @return {string}   UUID string
+ * @return {string|boolean}   UUID string or false
  */
 module.exports.getUUID = $ => {
-  const match = $('[name="news_keywords"]').attr('content').match(/UUID:([\w-]+)/);
-  return match ? match.pop() : false;
+  const newsKeywords = $('[name="news_keywords"]').attr('content');
+  if (newsKeywords) {
+    const matches = newsKeywords.match(/UUID:([\w-]+)/);
+    return matches ? matches.pop() : false;
+  }
+
+  return false;
 };
 
 /**
