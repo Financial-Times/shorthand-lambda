@@ -33,22 +33,22 @@ const polyfillScript = `
 const oTrackingScript = `
   <!-- INIT and make a page request -->
   <script id="o-tracking">
-      function otrackinginit() {
+      function oTrackinginit() {
+          // oTracking
+          var oTracking = Origami['o-tracking'];
           var config_data = {
               server: 'https://spoor-api.ft.com/px.gif',
               context: {
                   product: 'shorthand-ceros'
               },
               user: {
-                  ft_session: otracking.utils.getValueFromCookie(/FTSession=([^;]+)/)
+                  ft_session: oTracking.utils.getValueFromCookie(/FTSession=([^;]+)/)
               }
           }
-          // oTracking
-          var oTracking = Origami['o-tracking'];
           // Setup
           oTracking.init(config_data);
           // Page
-          otracking.page({
+          oTracking.page({
               content: {
                   asset_type: 'page'
               }
@@ -62,11 +62,11 @@ const oTrackingScript = `
           if (o.hasOwnProperty('onreadystatechange')) {
               o.onreadystatechange = function() {
                   if (o.readyState === "loaded") {
-                      otrackinginit();
+                      oTrackinginit();
                   }
               };
           } else {
-              o.onload = otrackinginit;
+              o.onload = oTrackinginit;
           }
           s.parentNode.insertBefore(o, s);
       }
