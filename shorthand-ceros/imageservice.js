@@ -8,9 +8,13 @@
  */
 module.exports = body => {
   if (!body || typeof body !== 'string') return;
+
   const relativeRegex = /\.(\/.*?\.(?:jpe?g|png|svg|gif))/g; // For relative paths
   const absoluteAwsRegex = /(.*?amazonaws\.com\/.*?\.(?:jpe?g|png|svg|gif))/g; // For absolute paths on AWS
-  const replaceRelative = `https://www.ft.com/__origami/service/image/v2/images/raw$1?source=commercial-content-lambda`;
+  const endpointURI = `http://${process.env.DEST_BUCKET}.s3-website-` +
+    `${process.env.DEST_BUCKET_REGION}.amazonaws.com/`;
+
+  const replaceRelative = `https://www.ft.com/__origami/service/image/v2/images/raw${endpointURI}$1?source=commercial-content-lambda`;
   const replaceAbsolute = `https://www.ft.com/__origami/service/image/v2/images/raw$1?source=commercial-content-lambda`;
 
   // Assuming data contains the HTML body...
