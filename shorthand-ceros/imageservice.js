@@ -8,21 +8,21 @@
  */
 module.exports = (body, filePath) => {
   if (!body || typeof body !== 'string') return;
-  console.log('filePath');
-  console.log(filePath);
-  if (typeof filePath === 'string') {filePath = filePath.substring(0, filePath.lastIndexOf('/'));}
-  else {filePath = '';}
-  //^.*[\\\/](.*?(?:jpe?g|png|svg|gif))
+  if (typeof filePath === 'string') {
+    filePath = '/' + filePath.substring(0, filePath.lastIndexOf('/'));
+  } else {
+    filePath = '';
+  }
   const relativeRegex = /\.(\/.*?\.(?:jpe?g|png|svg|gif))/g; // For relative paths
   const absoluteAwsRegex = /(.*?amazonaws\.com\/.*?\.(?:jpe?g|png|svg|gif))/g; // For absolute paths on AWS
-  const endpointURI = encodeURIComponent(`https://s3-${process.env.DEST_BUCKET_REGION}.amazonaws.com/${process.env.DEST_BUCKET}/${filePath}/`);
-  //const replaceRelative = `https://www.ft.com/__origami/service/image/v2/images/raw/${endpointURI}$2$3?source=commercial-content-lambda`;
+  const endpointURI = encodeURIComponent(`https://s3-${process.env.DEST_BUCKET_REGION}.amazonaws.com/${process.env.DEST_BUCKET}${filePath}`);
   const replaceAbsolute = `https://www.ft.com/__origami/service/image/v2/images/raw$1?source=commercial-content-lambda`;
 
-  function replaceRel(match, p1, offset, string) {
+  function replaceRel(match, p1) {
     p1 = encodeURIComponent(p1);
     return `https://www.ft.com/__origami/service/image/v2/images/raw/${endpointURI}${p1}?source=commercial-content-lambda`;
   }
+
   // Assuming data contains the HTML body...
   return body
     .replace(relativeRegex, replaceRel) // Pass 1: change relative URLs to image service

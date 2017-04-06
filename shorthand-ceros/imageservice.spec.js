@@ -14,25 +14,23 @@ const fixture = readFileSync(resolve(__dirname, '..', 'test-fixtures', 'index.ht
 
 const imageService = require('./imageservice');
 
-const bucketName = 'test-bucket';
+const bucketName = 'dest-bucket';
 const bucketRegion = 'test-region';
+const filePath = 'paidpost/test84';
 const endpointURI = `http://${bucketName}.s3-website-${bucketRegion}.amazonaws.com`;
 
 describe('imageservice.addUrls', () => {
   it('replaces relative URLs with image service URLs', () => {
-    const result = imageService(fixture);
+    const result = imageService(fixture, 'paidpost/test84/index.html');
     const $ = cheerio.load(result);
     const testUrls = [
       './media/shorthand-logo-horizonal_ur0ijsl.png',
       './media/flying_gull-mr.jpg',
     ];
 
-    for (let i = 0; i < testUrls.length; i++) {
-    //  const modifiedOriginal = encodeURIComponent(`${endpointURI}${testUrls[i].substr(1)}`);
-    //  const resultLink = `https://www.ft.com/__origami/service/image/v2/images/raw${modifiedOriginal}?source=commercial-content-lambda`;
-      console.log($(`.img-service`)[0].attribs.src);
-      expect($(`.img-service`)).to.not.be.empty;
-    }
+    const encodedFullPath = encodeURIComponent(`https://s3-${bucketRegion}.amazonaws.com/${bucketName}/${filePath}${testUrls[0].substr(1)}`);
+    const resultLink = `https://www.ft.com/__origami/service/image/v2/images/raw/${encodedFullPath}?source=commercial-content-lambda`;
+    expect($(`#header-logo`)[0].attribs.src).to.equal(resultLink);
   });
 
   it('replaces Amazon S3 URLs with Image Service URLs', () => {
