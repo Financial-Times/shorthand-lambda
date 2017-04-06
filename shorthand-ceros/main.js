@@ -23,7 +23,7 @@ const resultBase = `http://${process.env.DEST_BUCKET}.s3-website-` +
  */
 function pipeline(body, item, cb) {
   if (!body) return cb('Empty HTML document');
-  const withImageService = imageservice(body); // Needs to be before creating Cheerio object.
+  const withImageService = imageservice(body, item.s3.object.key); // Needs to be before creating Cheerio object.
 
   const $ = cheerio.load(withImageService);
   const uuid = utils.getUUID($);

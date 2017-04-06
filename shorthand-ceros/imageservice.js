@@ -6,20 +6,26 @@
  * @TODO URLencode the matching URLs
  * @TODO maybe use Cheerio for this instead?
  */
-module.exports = body => {
+module.exports = (body, filePath) => {
   if (!body || typeof body !== 'string') return;
-
+  console.log('filePath');
+  console.log(filePath);
+  if (typeof filePath === 'string') {filePath = filePath.substring(0, filePath.lastIndexOf('/'));}
+  else {filePath = '';}
+  //^.*[\\\/](.*?(?:jpe?g|png|svg|gif))
   const relativeRegex = /\.(\/.*?\.(?:jpe?g|png|svg|gif))/g; // For relative paths
   const absoluteAwsRegex = /(.*?amazonaws\.com\/.*?\.(?:jpe?g|png|svg|gif))/g; // For absolute paths on AWS
-  const endpointURI = `http://${process.env.DEST_BUCKET}.s3-website-` +
-    `${process.env.DEST_BUCKET_REGION}.amazonaws.com/`;
-
-  const replaceRelative = `https://www.ft.com/__origami/service/image/v2/images/raw${endpointURI}$1?source=commercial-content-lambda`;
+  const endpointURI = encodeURIComponent(`https://s3-${process.env.DEST_BUCKET_REGION}.amazonaws.com/${process.env.DEST_BUCKET}/${filePath}/`);
+  //const replaceRelative = `https://www.ft.com/__origami/service/image/v2/images/raw/${endpointURI}$2$3?source=commercial-content-lambda`;
   const replaceAbsolute = `https://www.ft.com/__origami/service/image/v2/images/raw$1?source=commercial-content-lambda`;
 
+  function replaceRel(match, p1, offset, string) {
+    p1 = encodeURIComponent(p1);
+    return `https://www.ft.com/__origami/service/image/v2/images/raw/${endpointURI}${p1}?source=commercial-content-lambda`;
+  }
   // Assuming data contains the HTML body...
   return body
-    .replace(relativeRegex, replaceRelative) // Pass 1: change relative URLs to image service
+    .replace(relativeRegex, replaceRel) // Pass 1: change relative URLs to image service
     .replace(absoluteAwsRegex, replaceAbsolute) // Pass 2: change absolute AWS paths to image service
     ;
 };
