@@ -85,7 +85,7 @@ const ctmFallback = `
  * @return {Cheerio}   Modified Cheerio DOM object
  */
 module.exports = ($, args) => {
-  const uuid = args && args.hasOwnProperty('uuid') ? args.uuid : false;
+  const uuid = args && Object.prototype.hasOwnProperty.call(args, 'uuid') ? args.uuid : false;
   $('head').append(ctmStyles);
   $('head').append(ctmScript);
   $('head').append(polyfillScript);
