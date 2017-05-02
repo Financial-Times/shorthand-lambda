@@ -9,19 +9,32 @@ const client = new S3({
   region: 'eu-west-1',
 });
 
+const DEFAULTS = {
+  uuid: false,
+  comments: false,
+  track: true,
+};
+
 /**
  * Return UUID from news_keywords meta tag
  * @param  {Cheerio} $ Parsed Cheerio DOM
  * @return {string|boolean}   UUID string or false
  */
-module.exports.getUUID = $ => {
+module.exports.getArgs = $ => {
   const newsKeywords = $('[name="news_keywords"]').attr('content');
   if (newsKeywords) {
-    const matches = newsKeywords.match(/UUID:([\w-]+)/);
-    return matches ? matches.pop() : false;
+    const fragments = newsKeywords.split(/,\s?/);
+    const args = fragments.reduce((c, frag) => {
+      const split = frag.split(/:\s?/);
+      const arg = {
+        [split[0].toLowerCase()]: split[1],
+      };
+      return Object.assign({}, c, arg);
+    }, {});
+    return Object.assign({}, DEFAULTS, args);
   }
 
-  return false;
+  return Object.assign({}, DEFAULTS);
 };
 
 /**

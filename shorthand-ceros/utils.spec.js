@@ -34,17 +34,17 @@ describe('tests for the Utils module', () => {
     MockS3.prototype.copyObject.reset();
   });
 
-  describe('getUUID', () => {
+  describe('getArgs', () => {
     it('returns a UUID given a HTML DOM string', () => {
       const fixture = readFileSync(
         resolve(__dirname, '..', 'test-fixtures', 'index.html'),
         { encoding: 'utf8' }
       );
 
-      const result = utils.getUUID(cheerio.load(fixture));
+      const result = utils.getArgs(cheerio.load(fixture));
 
-      expect(result).to.be.a('string');
-      expect(result).to.equal('0fb9fc9ff28bec1a871d387c3e788209');
+      expect(result.uuid).to.be.a('string');
+      expect(result.uuid).to.equal('0fb9fc9ff28bec1a871d387c3e788209');
     });
 
     it('returns false if no news_keywords attribute found', () => {
@@ -53,9 +53,9 @@ describe('tests for the Utils module', () => {
         { encoding: 'utf8' }
       );
 
-      const result = utils.getUUID(cheerio.load(fixture));
+      const result = utils.getArgs(cheerio.load(fixture));
 
-      expect(result).to.be.false;
+      expect(result.uuid).to.be.false;
     });
 
     it('returns false if news_keywords attribute empty', () => {
@@ -64,9 +64,9 @@ describe('tests for the Utils module', () => {
         { encoding: 'utf8' }
       );
 
-      const result = utils.getUUID(cheerio.load(fixture));
+      const result = utils.getArgs(cheerio.load(fixture));
 
-      expect(result).to.be.false;
+      expect(result.uuid).to.be.false;
     });
   });
 

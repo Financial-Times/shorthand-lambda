@@ -26,11 +26,11 @@ function pipeline(body, item, cb) {
   const withImageService = imageservice(body, item.s3.object.key); // Needs to be before creating Cheerio object.
 
   const $ = cheerio.load(withImageService);
-  const uuid = utils.getUUID($);
+  const args = utils.getArgs($);
 
-  if (uuid) { // Editorial project
-    const withComments = comments($);
-    const withTracking = oTracking(withComments);
+  if (args.uuid) { // Editorial project
+    const withComments = comments($, args);
+    const withTracking = oTracking(withComments, args);
     // rest of editorial pipeline...
     utils.deploy(item, withTracking.html())
       .then(key => {
