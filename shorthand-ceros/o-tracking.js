@@ -30,7 +30,7 @@ const polyfillScript = `
   <!-- Add Polyfil service -->
   <script id="polyfill-service" src="https://cdn.polyfill.io/v1/polyfill.min.js"></script>`;
 
-const oTrackingScript = `
+const oTrackingScript = uuid => `
   <!-- INIT and make a page request -->
   <script id="o-tracking">
       function oTrackinginit() {
@@ -49,7 +49,8 @@ const oTrackingScript = `
           oTracking.init(config_data);
           // Page
           oTracking.page({
-              content: {
+              content: {${uuid ? `
+                  uuid: '${uuid}',` : ''}
                   asset_type: 'page'
               }
           });
@@ -83,11 +84,12 @@ const ctmFallback = `
  * @param  {Cheerio} $ Loaded Cheerio DOM object
  * @return {Cheerio}   Modified Cheerio DOM object
  */
-module.exports = $ => {
+module.exports = ($, args = {}) => {
+  const uuid = args.uuid || false;
   $('head').append(ctmStyles);
   $('head').append(ctmScript);
   $('head').append(polyfillScript);
-  $('head').append(oTrackingScript);
+  $('head').append(oTrackingScript(uuid));
   $('body').prepend(ctmFallback);
 
   return $;
