@@ -8,7 +8,7 @@
 'use strict';
 
 module.exports = ($, args) => {
-  if (args.comments && args.uuid) {
+  if (args.comments !== 'false' && args.uuid) {
     const uuid = args.uuid;
     const headline = $('title').text();
     const commentsSnippet = `
