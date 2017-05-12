@@ -31,7 +31,7 @@ module.exports.getArgs = $ => {
       };
       return Object.assign({}, c, arg);
     }, {});
-    return Object.assign({}, DEFAULTS, args); // TODO find way of typing properties
+    return Object.assign({}, DEFAULTS, args);
   }
 
   return Object.assign({}, DEFAULTS);

@@ -9,6 +9,7 @@ const S3 = require('aws-sdk').S3;
 const cheerio = require('cheerio');
 const comments = require('./comments');
 const imageservice = require('./imageservice');
+const relPathCssJs = require('./rel-path-css-js');
 const oTracking = require('./o-tracking');
 const utils = require('./utils');
 
@@ -24,8 +25,9 @@ const resultBase = `http://${process.env.DEST_BUCKET}.s3-website-` +
 function pipeline(body, item, cb) {
   if (!body) return cb('Empty HTML document');
   const withImageService = imageservice(body, item.s3.object.key); // Needs to be before creating Cheerio object.
+  const updateRelPathCssJs = relPathCssJs(withImageService, item.s3.object.key); // Needs to be before creating Cheerio object.
 
-  const $ = cheerio.load(withImageService);
+  const $ = cheerio.load(updateRelPathCssJs);
   const args = utils.getArgs($);
 
   if (args.uuid) { // Editorial project
