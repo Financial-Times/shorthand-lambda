@@ -1,5 +1,5 @@
 /**
- * Adds Image Service URLs to content using yucky regex replacement
+ * Replaces relative CSS/JS paths with vanity url compatible paths on the ft.com domain
  * @param {string} body     Body as a string
  * @returns {string|void}   modified HTML body string or void
  *
@@ -14,7 +14,7 @@ module.exports = (body, filePath) => {
     filePath = '';
   }
   const relativeRegex = /\.(\/.*?\.(?:css|js))/g; // For relative paths
-  const replacer= `https://www.ft.com${filePath}$1`;
+  const replacer = `https://www.ft.com${filePath}$1`;
   // Assuming data contains the HTML body...
   return body
     .replace(relativeRegex, replacer);

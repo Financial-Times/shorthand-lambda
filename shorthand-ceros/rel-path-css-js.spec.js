@@ -1,5 +1,5 @@
 /**
- * Spec for Image Service tasks
+ * Spec for relative path replacement tasks (css and js)
  */
 
 'use strict';
