@@ -1,6 +1,4 @@
-# Commercial Content Publishing App
-
-#### User Guide
+# Commercial Content Publishing App User Guide
 
 ## Usage
 
