@@ -25,12 +25,15 @@ describe('imageservice.addUrls', () => {
     const $ = cheerio.load(result);
     const testUrls = [
       './media/shorthand-logo-horizonal_ur0ijsl.png',
-      './media/flying_gull-mr.jpg',
+      'media/images/6c8fa676f560ded694e9fdd993009562/arrow-icon.svg'
     ];
 
     const encodedFullPath = encodeURIComponent(`https://s3-${bucketRegion}.amazonaws.com/${bucketName}/${filePath}${testUrls[0].substr(1)}`);
+    const encodedFullPath2 = encodeURIComponent(`https://s3-${bucketRegion}.amazonaws.com/${bucketName}/${filePath}${testUrls[1]}`);
     const resultLink = `https://www.ft.com/__origami/service/image/v2/images/raw/${encodedFullPath}?source=commercial-content-lambda`;
+    const resultLink2 = `https://www.ft.com/__origami/service/image/v2/images/raw/${encodedFullPath2}?source=commercial-content-lambda`;
     expect($(`#header-logo`)[0].attribs.src).to.equal(resultLink);
+    expect($(`#cerostest`)[0].attribs.src).to.equal(resultLink2);
   });
 
   it('replaces Amazon S3 URLs with Image Service URLs', () => {
