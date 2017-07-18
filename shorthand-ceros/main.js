@@ -32,7 +32,8 @@ function pipeline(body, item, cb) {
 
   if (args.uuid) { // Editorial project
     const withComments = comments($, args);
-    const withTracking = oTracking(withComments, args);
+    const withHeader = headerFooter(withComments, args);
+    const withTracking = oTracking(withHeader, args);
     // rest of editorial pipeline...
     utils.deploy(item, withTracking.html())
       .then(key => {
