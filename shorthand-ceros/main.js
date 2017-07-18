@@ -8,6 +8,7 @@ const extname = require('path').extname;
 const S3 = require('aws-sdk').S3;
 const cheerio = require('cheerio');
 const comments = require('./comments');
+const headerFooter = require('./header-footer');
 const imageservice = require('./imageservice');
 const relPathCssJs = require('./rel-path-css-js');
 const oTracking = require('./o-tracking');
