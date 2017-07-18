@@ -1,5 +1,5 @@
 module.exports = ($, args) => {
-  if (args.comments !== 'false' && args.uuid) {
+  if (args.uuid) {
 
 const headSnippet = `
 <meta charset="UTF-8">
