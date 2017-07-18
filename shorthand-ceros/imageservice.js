@@ -13,12 +13,15 @@ module.exports = (body, filePath) => {
   } else {
     filePath = '';
   }
-  const relativeRegex = /\.(\/.*?\.(?:jpe?g|png|svg|gif))/g; // For relative paths
+  const relativeRegex = /((\.|media*)\/.*?\.(?:jpe?g|png|svg|gif))/g; // For relative paths
   const absoluteAwsRegex = /(.*?amazonaws\.com\/.*?\.(?:jpe?g|png|svg|gif))/g; // For absolute paths on AWS
   const endpointURI = encodeURIComponent(`https://s3-${process.env.DEST_BUCKET_REGION}.amazonaws.com/${process.env.DEST_BUCKET}${filePath}`);
   const replaceAbsolute = `https://www.ft.com/__origami/service/image/v2/images/raw$1?source=commercial-content-lambda`;
 
   function replaceRel(match, p1) {
+    if (p1.charAt(0) === '.') {
+      p1 = p1.substr(1);
+    }
     p1 = encodeURIComponent(p1);
     return `https://www.ft.com/__origami/service/image/v2/images/raw/${endpointURI}${p1}?source=commercial-content-lambda`;
   }
