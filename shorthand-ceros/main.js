@@ -8,7 +8,6 @@ const extname = require('path').extname;
 const S3 = require('aws-sdk').S3;
 const cheerio = require('cheerio');
 const comments = require('./comments');
-const headerFooter = require('./header-footer');
 const imageservice = require('./imageservice');
 const relPathCssJs = require('./rel-path-css-js');
 const oTracking = require('./o-tracking');
@@ -33,8 +32,7 @@ function pipeline(body, item, cb) {
 
   if (args.uuid) { // Editorial project
     const withComments = comments($, args);
-    const withHeader = headerFooter(withComments, args);
-    const withTracking = oTracking(withHeader, args);
+    const withTracking = oTracking(withComments, args);
     // rest of editorial pipeline...
     utils.deploy(item, withTracking.html())
       .then(key => {
