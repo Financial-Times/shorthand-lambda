@@ -22,11 +22,14 @@ module.exports = (body, filePath) => {
     if (p1.charAt(0) === '.') {
       p1 = p1.substr(1);
     }
+    if (p1.charAt(0) !== '/') {
+      p1 = '/' + p1;
+    }
     p1 = encodeURIComponent(p1);
     return `https://www.ft.com/__origami/service/image/v2/images/raw/${endpointURI}${p1}?source=commercial-content-lambda`;
   }
 
-  console.log("latest changes");
+  console.log('latest changes');
   // Assuming data contains the HTML body...
   return body
     .replace(relativeRegex, replaceRel) // Pass 1: change relative URLs to image service
