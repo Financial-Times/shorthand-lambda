@@ -1,4 +1,4 @@
-module.exports = ($) => {
+module.exports = $ => {
 
     const headSnippet = `
       <meta charset="UTF-8">
