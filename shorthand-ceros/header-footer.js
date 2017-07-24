@@ -149,8 +149,7 @@ module.exports = $ => {
         <span class="disclaimer__sponsor-wide">BY
           <span class="disclaimer__sponsor-name">[[SPONSOR]]</span>
         </span>
-<p></p>
-
+        <p></p>
 			</div>
 				<div class="disclaimer__sponsor-text second-column" data-o-grid-colspan="10 S7">
             <span class="disclaimer__sponsor">BY
@@ -162,12 +161,81 @@ module.exports = $ => {
 				</div>
 		</div>
 	</div>
-
-</section>
+  </section>
 `;
+
+  const footer = `<footer class="o-footer o-footer--theme-dark" data-o-component="o-footer" data-o-footer--no-js="">
+  	<div class="o-footer__container">
+
+  		<div class="o-footer__copyright" role="contentinfo">
+  			<small>
+  				<abbr title="Financial Times" aria-label="F T">FT</abbr> and &#x2018;Financial Times&#x2019; are trademarks of The Financial Times Ltd.<br>
+  				The Financial Times and its journalism are subject to a self-regulation regime under the <a href="http://www.ft.com/editorialcode" aria-label="F T Editorial Code of Practice">FT Editorial Code of Practice</a>.
+  			</small>
+  		</div>
+
+  	</div>
+  	<div class="o-footer__brand">
+  		<div class="o-footer__container">
+  			<div class="o-footer__brand-logo"></div>
+  		</div>
+  	</div>
+  </footer>
+
+  <div class="o-header__drawer" id="o-header-drawer" data-o-header-drawer="" data-o-header-drawer--no-js="">
+  	<div class="o-header__drawer-inner">
+
+  		<div class="o-header__drawer-tools">
+  			<a class="o-header__drawer-tools-logo" href="https://www.ft.com/">
+  				<span class="o-header__visually-hidden">Financial Times</span>
+  			</a>
+  			<button type="button" class="o-header__drawer-tools-close" aria-controls="o-header-drawer">
+  				<span class="o-header__visually-hidden">Close</span>
+  			</button>
+  		</div>
+
+  		<nav class="o-header__drawer-menu o-header__drawer-menu--primary" role="navigation" aria-label="Primary navigation">
+  			<ul class="o-header__drawer-menu-list">
+  					<li class="o-header__drawer-menu-item ">
+  						<a class="o-header__drawer-menu-link" href="https://next.ft.com/">Home</a>
+  					</li>
+  					<li class="o-header__drawer-menu-item ">
+  						<a class="o-header__drawer-menu-link" href="https://next.ft.com/world">World</a>
+  					</li>
+  					<li class="o-header__drawer-menu-item ">
+  						<a class="o-header__drawer-menu-link" href="https://next.ft.com/world/uk">UK</a>
+  					</li>
+  					<li class="o-header__drawer-menu-item ">
+  						<a class="o-header__drawer-menu-link" href="https://next.ft.com/companies">Companies</a>
+  					</li>
+  					<li class="o-header__drawer-menu-item ">
+  						<a class="o-header__drawer-menu-link" href="https://next.ft.com/markets">Markets</a>
+  					</li>
+  					<li class="o-header__drawer-menu-item ">
+  						<a class="o-header__drawer-menu-link" href="https://next.ft.com/comment">Opinion</a>
+  					</li>
+  					<li class="o-header__drawer-menu-item ">
+  						<a class="o-header__drawer-menu-link" href="https://next.ft.com/work-careers">Work &amp; Careers</a>
+  					</li>
+  					<li class="o-header__drawer-menu-item ">
+  						<a class="o-header__drawer-menu-link" href="https://next.ft.com/life-arts">Life &amp; Arts</a>
+  					</li>
+  					<li class="o-header__drawer-menu-item ">
+  						<a class="o-header__drawer-menu-link" href="https://next.ft.com/personal-finance">Personal Finance</a>
+  					</li>
+  					<li class="o-header__drawer-menu-item ">
+  						<a class="o-header__drawer-menu-link" href="https://next.ft.com/science-environment">Science &amp; Environment</a>
+  					</li>
+  			</ul>
+  		</nav>
+
+  	</div>
+  </div>
+  `;
 
   $('head').prepend(headSnippet);
   $('body').prepend(headerSnippet);
+  $('body').append(footer);
 
   return $;
 };
