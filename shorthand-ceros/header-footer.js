@@ -1,5 +1,5 @@
 module.exports = ($, args) => {
-  if (args.uuid) {
+
     const headSnippet = `
       <meta charset="UTF-8">
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -146,6 +146,6 @@ module.exports = ($, args) => {
 
     $('head').prepend(headSnippet);
     $('body').prepend(headerSnippet);
-  }
+
   return $;
 };
