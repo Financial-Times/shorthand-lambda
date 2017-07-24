@@ -12,7 +12,7 @@ module.exports = ($, args) => {
     const uuid = args.uuid;
     const headline = $('title').text();
     const commentsSnippet = `
-    <!-- O-COMMENTS -->
+    <!-- BEGIN O-COMMENTS -->
     <div id="comments" style="max-width:800px;margin: 0 auto;"
       data-o-component="o-comments" data-o-comments-config-title="${headline}"
       data-o-comments-config-url="https://www.ft.com/content/${uuid}"
