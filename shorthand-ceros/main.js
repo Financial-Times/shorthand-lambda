@@ -43,7 +43,7 @@ function pipeline(body, item, cb) {
       .catch(cb);
   } else { // Commercial Content
     const withHeader = headerFooter($);
-    const withTracking = oTracking(headerFooter);
+    const withTracking = oTracking(withHeader);
     utils.deploy(item, withTracking.html())
       .then(key => {
         cb(null, `Deployed to: ${resultBase}${key}`);
