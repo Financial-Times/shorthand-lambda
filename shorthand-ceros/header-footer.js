@@ -237,6 +237,6 @@ module.exports = $ => {
   $('head').prepend(headSnippet);
   $('body').prepend(headerSnippet);
   $('body').append(footer);
-  $().
+
   return $;
 };
