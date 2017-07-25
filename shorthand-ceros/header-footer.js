@@ -70,6 +70,9 @@ module.exports = $ => {
      position: relative;
      top: 5px;
    }
+   .story .section-header {
+     position: relative!important;
+   }
    .disclaimer__sponsor {
      position: relative;
    }
@@ -125,9 +128,7 @@ module.exports = $ => {
   		<div class="o-header__container">
   			<div class="o-header__top-wrapper">
   				<div class="o-header__top-column o-header__top-column--left">
-  					<a href="#o-header-drawer" class="o-header__top-link o-header__top-link--menu" aria-controls="o-header-drawer">
-  						<span class="o-header__top-link-label">Menu</span>
-  					</a>
+
   				</div>
   				<div class="o-header__top-column o-header__top-column--center">
   					<a class="o-header__top-logo" href="/" title="Go to Financial Times homepage">
@@ -236,6 +237,6 @@ module.exports = $ => {
   $('head').prepend(headSnippet);
   $('body').prepend(headerSnippet);
   $('body').append(footer);
-
+  $().
   return $;
 };
