@@ -187,10 +187,10 @@ module.exports = $ => {
   $('head').prepend(headSnippet);
   $('body').prepend(headerSnippet);
   $('body').append(footer);
-  let sponsor = ($('meta[name=author]') && $('meta[name=author]').attr('content')) ? $('meta[name=author]').attr('content').split(',') : null;
-  if (sponsor) {
-    $('.disclaimer__sponsor-name').innerHTML = sponsor[0];
-  }
+  // let sponsor = ($('meta[name=author]') && $('meta[name=author]').attr('content')) ? $('meta[name=author]').attr('content').split(',') : null;
+  // if (sponsor) {
+  //   $('.disclaimer__sponsor-name').innerHTML = sponsor[0];
+  // }
 
   return $;
 };
