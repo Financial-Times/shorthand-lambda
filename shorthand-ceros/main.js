@@ -38,13 +38,12 @@ function pipeline(body, item, cb) {
         .then(withTracking => utils.deploy(item, withTracking.html()))
         .then(key => cb(null, `Deployed to: ${resultBase}${key}`))
         .catch(cb);
-
-  } else { // Commercial Content
-      headerFooter($)
-        .then(withHeader => oTracking(withHeader))
-        .then(withTracking => utils.deploy(item, withTracking.html()))
-        .then(key => cb(null, `Deployed to: ${resultBase}${key}`))
-        .catch(cb);
+  } else {// Commercial Content
+    headerFooter($)
+      .then(withHeader => oTracking(withHeader))
+      .then(withTracking => utils.deploy(item, withTracking.html()))
+      .then(key => cb(null, `Deployed to: ${resultBase}${key}`))
+      .catch(cb);
   }
 }
 

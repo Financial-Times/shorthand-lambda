@@ -1,5 +1,6 @@
 'use strict';
 const fetch = require('node-fetch');
+
 const headSnippet = `
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -159,7 +160,6 @@ const headSnippet = `
 		}
 	</style>`;
 
-
 const headerSnippet = `
     <header class="o-header" data-o-component="o-header" data-o-header--no-js="">
 	<div class="o-header__row o-header__top">
@@ -196,8 +196,7 @@ const headerSnippet = `
 
 			</div>
 		</div>
-	</div>
-`;
+	</div>`;
 
 const footer = `<footer class="o-footer o-footer--theme-dark" data-o-component="o-footer" data-o-footer--no-js="">
 	<div class="o-footer__container">
@@ -215,8 +214,7 @@ const footer = `<footer class="o-footer o-footer--theme-dark" data-o-component="
 			<div class="o-footer__brand-logo"></div>
 		</div>
 	</div>
-</footer>
-  `;
+</footer>`;
 
 const footScripts = `<script>
 	/* FT Analytics */
@@ -346,55 +344,55 @@ const footScripts = `<script>
 </noscript>`;
 
 const getNavHtml = navItems => {
-    var navHtml = `<div class="o-header__drawer" id="o-header-drawer" data-o-header-drawer="" data-o-header-drawer--no-js="">
-	    <div class="o-header__drawer-inner">
+  var navHtml = `
+  <div class="o-header__drawer" id="o-header-drawer" data-o-header-drawer="" data-o-header-drawer--no-js="">
+    <div class="o-header__drawer-inner">
 
-		<div class="o-header__drawer-tools">
-			<a class="o-header__drawer-tools-logo" href="https://www.ft.com/">
-				<span class="o-header__visually-hidden">Financial Times</span>
-			</a>
-			<button type="button" class="o-header__drawer-tools-close" aria-controls="o-header-drawer">
-				<span class="o-header__visually-hidden">Close</span>
-			</button>
-		</div>
+    <div class="o-header__drawer-tools">
+        <a class="o-header__drawer-tools-logo" href="https://www.ft.com/">
+            <span class="o-header__visually-hidden">Financial Times</span>
+        </a>
+        <button type="button" class="o-header__drawer-tools-close" aria-controls="o-header-drawer">
+            <span class="o-header__visually-hidden">Close</span>
+        </button>
+    </div>
 
-		<nav class="o-header__drawer-menu o-header__drawer-menu--primary" role="navigation" aria-label="Primary navigation">
+    <nav class="o-header__drawer-menu o-header__drawer-menu--primary" role="navigation" aria-label="Primary navigation">
 
-			<ul class="o-header__drawer-menu-list">`;
-    navItems.forEach(navItem => {
-        navHtml += `<li class="o-header__drawer-menu-item ">
-					<a class="o-header__drawer-menu-link" href="https://next.ft.com${navItem.item.href}">${navItem.item.name}</a>
-				</li>`;
-    });
+        <ul class="o-header__drawer-menu-list">`;
+  navItems.forEach(navItem => {
+    navHtml += `<li class="o-header__drawer-menu-item ">
+                <a class="o-header__drawer-menu-link" href="https://next.ft.com${navItem.item.href}">${navItem.item.name}</a>
+            </li>`;
+  });
 
-    navHtml += `</ul></nav></div></div>`;
+  navHtml += `</ul></nav></div></div>`;
 
-
-    return navHtml;
+  return navHtml;
 };
 
 const getNavData = () => {
-    return fetch('http://ft-next-navigation.s3-website-eu-west-1.amazonaws.com/json/external.json')
-        .then(response => {
-            return response.json();
-        })
-        .then(json => {
-            return json.native_ad_drawer;
-        })
-        .catch(e => {
-            console.log(e);
-        });
+  return fetch('http://ft-next-navigation.s3-website-eu-west-1.amazonaws.com/json/external.json')
+    .then(response => {
+      return response.json();
+    })
+    .then(json => {
+      return json.native_ad_drawer;
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 module.exports = $ => {
-    const navData = getNavData();
-    return navData.then(data => {
-        $('head').prepend(headSnippet);
-        $('body').prepend(headerSnippet);
-        $('body').append(footer);
-        $('body').append(getNavHtml(data));
-        $('body').append(footScripts);
+  const navData = getNavData();
+  return navData.then(data => {
+    $('head').prepend(headSnippet);
+    $('body').prepend(headerSnippet);
+    $('body').append(footer);
+    $('body').append(getNavHtml(data));
+    $('body').append(footScripts);
 
-        return $;
-    });
+    return $;
+  });
 };
