@@ -1,7 +1,6 @@
+'use strict';
 const fetch = require('node-fetch');
-
-module.exports = $ => {
-  const headSnippet = `
+const headSnippet = `
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -161,7 +160,7 @@ module.exports = $ => {
 	</style>`;
 
 
-  const headerSnippet = `
+const headerSnippet = `
     <header class="o-header" data-o-component="o-header" data-o-header--no-js="">
 	<div class="o-header__row o-header__top">
 		<div class="o-header__container">
@@ -200,7 +199,7 @@ module.exports = $ => {
 	</div>
 `;
 
-  const footer = `<footer class="o-footer o-footer--theme-dark" data-o-component="o-footer" data-o-footer--no-js="">
+const footer = `<footer class="o-footer o-footer--theme-dark" data-o-component="o-footer" data-o-footer--no-js="">
 	<div class="o-footer__container">
 
 		<div class="o-footer__copyright" role="contentinfo">
@@ -219,7 +218,7 @@ module.exports = $ => {
 </footer>
   `;
 
-  const footScripts = `<script>
+const footScripts = `<script>
 	/* FT Analytics */
 	(function(src) {
 
@@ -346,8 +345,8 @@ module.exports = $ => {
 	<img src="https://spoor-api.ft.com/px.gif?data=%7B%22category%22:%22page%22,%20%22action%22:%22view%22,%20%22system%22:%7B%22apiKey%22:%22qUb9maKfKbtpRsdp0p2J7uWxRPGJEP%22,%22source%22:%22o-tracking%22,%22version%22:%221.0.0%22%7D,%22context%22:%7B%22product%22:%22paid-post%22,%22content%22:%7B%22asset_type%22:%22page%22%7D%7D%7D"/>
 </noscript>`;
 
-    const getNav = navItems => {
-        var navHtml = `<div class="o-header__drawer" id="o-header-drawer" data-o-header-drawer="" data-o-header-drawer--no-js="">
+const getNavHtml = navItems => {
+    var navHtml = `<div class="o-header__drawer" id="o-header-drawer" data-o-header-drawer="" data-o-header-drawer--no-js="">
 	    <div class="o-header__drawer-inner">
 
 		<div class="o-header__drawer-tools">
@@ -362,38 +361,40 @@ module.exports = $ => {
 		<nav class="o-header__drawer-menu o-header__drawer-menu--primary" role="navigation" aria-label="Primary navigation">
 
 			<ul class="o-header__drawer-menu-list">`;
-        navItems.forEach(navItem => {
-            navHtml += `<li class="o-header__drawer-menu-item ">
+    navItems.forEach(navItem => {
+        navHtml += `<li class="o-header__drawer-menu-item ">
 					<a class="o-header__drawer-menu-link" href="https://next.ft.com${navItem.item.href}">${navItem.item.name}</a>
 				</li>`;
-        });
+    });
 
-        navHtml += `</ul></nav></div></div>`;
+    navHtml += `</ul></nav></div></div>`;
 
 
-        return navHtml;
-    };
+    return navHtml;
+};
 
-    fetch('http://ft-next-navigation.s3-website-eu-west-1.amazonaws.com/json/external.json')
+const getNavData = () => {
+    return fetch('http://ft-next-navigation.s3-website-eu-west-1.amazonaws.com/json/external.json')
         .then(response => {
             return response.json();
         })
         .then(json => {
-            var nav = json.native_ad_drawer;
-            $('head').prepend(headSnippet);
-            $('body').prepend(headerSnippet);
-            $('body').append(footer);
-            $('body').append(`<h2>Testing boooo</h2>`);
-            $('body').append(getNav(nav));
-            $('body').append(footScripts);
-            // let sponsor = ($('meta[name=author]') && $('meta[name=author]').attr('content')) ? $('meta[name=author]').attr('content').split(',') : null;
-            // if (sponsor) {
-            //   $('.disclaimer__sponsor-name').innerHTML = sponsor[0];
-            // }
-
-            return $;
+            return json.native_ad_drawer;
         })
         .catch(e => {
             console.log(e);
         });
+};
+
+module.exports = $ => {
+    const navData = getNavData();
+    return navData.then(data => {
+        $('head').prepend(headSnippet);
+        $('body').prepend(headerSnippet);
+        $('body').append(footer);
+        $('body').append(getNavHtml(data));
+        $('body').append(footScripts);
+
+        return $;
+    });
 };

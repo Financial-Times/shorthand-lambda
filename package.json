@@ -35,7 +35,8 @@
     "aws-sdk": "^2.22.0",
     "axios": "^0.15.3",
     "cheerio": "^0.22.0",
-    "uuid": "^2.0.3"
+    "uuid": "^2.0.3",
+    "node-fetch": "^1.7.3"
   },
   "devDependencies": {
     "aws-lambda-test-utils": "^1.0.2",

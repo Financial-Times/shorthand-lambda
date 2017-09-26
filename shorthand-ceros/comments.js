@@ -26,5 +26,5 @@ module.exports = ($, args) => {
     $('body').append(commentsSnippet);
   }
 
-  return $;
+  return new Promise.resolve($);
 };

@@ -32,23 +32,19 @@ function pipeline(body, item, cb) {
   const args = utils.getArgs($);
 
   if (args.uuid) { // Editorial project
-    const withComments = comments($, args);
-    const withHeader = headerFooter(withComments, args);
-    const withTracking = oTracking(withHeader, args);
-    // rest of editorial pipeline...
-    utils.deploy(item, withTracking.html())
-      .then(key => {
-        cb(null, `Deployed to: ${resultBase}${key}`);
-      })
-      .catch(cb);
+    comments($, args)
+        .then(withComments => headerFooter(withComments, args))
+        .then(withHeader => oTracking(withHeader, args))
+        .then(withTracking => utils.deploy(item, withTracking.html()))
+        .then(key => cb(null, `Deployed to: ${resultBase}${key}`))
+        .catch(cb);
+
   } else { // Commercial Content
-    const withHeader = headerFooter($);
-    const withTracking = oTracking(withHeader);
-    utils.deploy(item, withTracking.html())
-      .then(key => {
-        cb(null, `Deployed to: ${resultBase}${key}`);
-      })
-      .catch(cb);
+      headerFooter($)
+        .then(withHeader => oTracking(withHeader))
+        .then(withTracking => utils.deploy(item, withTracking.html()))
+        .then(key => cb(null, `Deployed to: ${resultBase}${key}`))
+        .catch(cb);
   }
 }
 

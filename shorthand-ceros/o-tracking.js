@@ -92,5 +92,5 @@ module.exports = ($, args) => {
   $('head').append(oTrackingScript(uuid));
   $('body').prepend(ctmFallback);
 
-  return $;
+  return Promise.resolve($);
 };
