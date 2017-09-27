@@ -24,31 +24,32 @@ describe('adding o-tracking', () => {
   });
 
   it('should add CTM styles', () => {
-    const result = oTracking($, UUIDFixture);
-
-    expect(result('head style#ctm-styles')).not.to.be.empty;
+    return oTracking($, UUIDFixture).then(result => {
+      expect(result('head style#ctm-styles')).not.to.be.empty;
+    });
   });
 
   it('should add CTM', () => {
-    const result = oTracking($, UUIDFixture);
-
-    expect(result('head script#ctm')).not.to.be.empty;
+    return oTracking($, UUIDFixture).then(result => {
+      expect(result('head script#ctm')).not.to.be.empty;
+    });
   });
 
   it('should add Polyfill service', () => {
-    const result = oTracking($, UUIDFixture);
-
-    expect(result('head script#polyfill-service')).not.to.be.empty;
+    return oTracking($, UUIDFixture).then(result => {
+      expect(result('head script#polyfill-service')).not.to.be.empty;
+    });
   });
 
   it('should add o-tracking instantiation code', () => {
-    const result = oTracking($, UUIDFixture);
-
-    expect(result('head script#o-tracking')).not.to.be.empty;
+    return oTracking($, UUIDFixture).then(result => {
+      expect(result('head script#o-tracking')).not.to.be.empty;
+    });
   });
 
   it('should add core fallback', () => {
-    const result = oTracking($, UUIDFixture);
-    expect(result('body [data-o-component="o-tracking"]')).not.to.be.empty;
+    return oTracking($, UUIDFixture).then(result => {
+      expect(result('body [data-o-component="o-tracking"]')).not.to.be.empty;
+    });
   });
 });

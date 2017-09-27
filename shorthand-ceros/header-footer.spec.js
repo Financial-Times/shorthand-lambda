@@ -25,8 +25,60 @@ describe('headerFooter', () => {
     $ = cheerio.load(fixture);
   });
 
-  it('adds comments snippet before closing html tag', () => {
-    const result = headerFooter($, ArgsFixture);
-    expect(result('.o-header').is('header')).to.be.true;
+  context('Header', () => {
+    it('adds the FT header', () => {
+      return headerFooter($, ArgsFixture).then(result => {
+        expect(result('.o-header').is('header')).to.be.true;
+      });
+    });
+
+    it('adds the paid-post banner with a tooltip', () => {
+      return headerFooter($, ArgsFixture).then(result => {
+        expect(result('#disclaimer').is('section')).to.be.true;
+        expect(result('#paid-post-tooltip').attr('data-o-component')).to.equal('o-tooltip');
+        expect(result('.o-tooltip-content').is('div')).to.be.true;
+      });
+    });
+
+    it('adds the cuts the mustard script', () => {
+      return headerFooter($, ArgsFixture).then(result => {
+        expect(result('#cuts-the-mustard').is('script')).to.be.true;
+      });
+    });
+
+    it('adds the polyfill script', () => {
+      return headerFooter($, ArgsFixture).then(result => {
+        expect(result('#polyfill').is('script')).to.be.true;
+        expect(result('#polyfill').attr('src')).to.equal('https://cdn.polyfill.io/v2/polyfill.min.js');
+      });
+    });
+
+    it('adds the origami build service stylesheet', () => {
+      return headerFooter($, ArgsFixture).then(result => {
+        expect(result('link[rel="stylesheet"]').attr('href')).to.include('https://build.origami.ft.com/v2/bundles/');
+      });
+    });
+  });
+
+  context('Footer ', () => {
+    it('adds the FT footer', () => {
+      return headerFooter($, ArgsFixture).then(result => {
+        expect(result('.o-footer').is('footer')).to.be.true;
+      });
+    });
+
+    it('adds the custom javascript', () => {
+      return headerFooter($, ArgsFixture).then(result => {
+        expect(result('#ft-js').is('script')).to.be.true;
+      });
+    });
+  });
+
+  context('Nav', () => {
+    it('adds the Nav', () => {
+      return headerFooter($, ArgsFixture).then(result => {
+        expect(result('#o-header-drawer').is('div')).to.be.true;
+      });
+    });
   });
 });

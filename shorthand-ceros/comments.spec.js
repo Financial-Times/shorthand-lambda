@@ -27,17 +27,19 @@ describe('comments', () => {
   });
 
   it('adds comments snippet before closing html tag', () => {
-    const result = comments($, ArgsFixture);
-    expect(result('#comments').is('div')).to.be.true;
-    expect(result('#comments').attr('data-o-comments-config-articleid')).to.have.string(ArgsFixture.uuid);
-    expect(result('#comments').attr('data-o-comments-config-title')).to.have.string('Demo story');
+    return comments($, ArgsFixture).then(result => {
+      expect(result('#comments').is('div')).to.be.true;
+      expect(result('#comments').attr('data-o-comments-config-articleid')).to.have.string(ArgsFixture.uuid);
+      expect(result('#comments').attr('data-o-comments-config-title')).to.have.string('Demo story');
+    });
   });
 
   it('adds the comment snippet before closing html-tag', () => {
-    const result = comments($, ArgsFixture);
-    const commentNodes = result('body').contents().filter(function () {
-      return this.nodeType === 8;
+    return comments($, ArgsFixture).then(result => {
+      const commentNodes = result('body').contents().filter(function () {
+        return this.nodeType === 8;
+      });
+      expect(commentNodes.last().get(0).nodeValue.trim()).to.equal('END O-COMMENTS');
     });
-    expect(commentNodes.last().get(0).nodeValue.trim()).to.equal('END O-COMMENTS');
   });
 });

@@ -1,196 +1,389 @@
-module.exports = $ => {
-  const headSnippet = `
-  <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+'use strict';
+const fetch = require('node-fetch');
 
-   <title>[[ REPLACE WITH YOUR TITLE]]</title>
-   <link rel="stylesheet" href="https://build.origami.ft.com/v2/bundles/css?modules=o-grid@^4.2.0,o-header@^6.3.0,o-footer@^5.0.1,o-typography@^4.3.0,o-colors@^3.4.1" />
- <script>
-   var cutsTheMustard = ('querySelector' in document && 'localStorage' in window && 'addEventListener' in window);
-   if (cutsTheMustard) {
-       // Swap the 'core' class on the HTML element for an 'enhanced' one
-       // We're doing it early in the head to avoid a flash of unstyled content
-       document.documentElement.className = document.documentElement.className.replace(/\bcore\b/g, 'enhanced');
-       }
-</script>
-<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+const headSnippet = `
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    <title>[[ REPLACE WITH YOUR TITLE]]</title>
+    <link rel="stylesheet" href="https://build.origami.ft.com/v2/bundles/css?modules=o-grid@^4.2.0,o-header@^7.0.4,o-footer@^6.0.2,o-typography@^5.0.1,o-colors@^4.0.1,o-tooltip@^2.2.3" />
+    <script id="cuts-the-mustard">
+        var cutsTheMustard = ('querySelector' in document && 'localStorage' in window && 'addEventListener' in window);
+        if (cutsTheMustard) {
+            // Swap the 'core' class on the HTML element for an 'enhanced' one
+            // We're doing it early in the head to avoid a flash of unstyled content
+            document.documentElement.className = document.documentElement.className.replace(/\bcore\b/g, 'enhanced');
+        }
+    </script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js" id="polyfill"></script>
 
-   <style>
-       * {
-           box-sizing: border-box;
-       }
-       /* Hide any enhanced experience content when in core mode, and vice versa. */
-       .core .o--if-js,
-       .enhanced .o--if-no-js { display: none !important; }
-   body, html {
-     margin: 0;
-     padding: 0;
-   }
-       body {
-           background-color: #FFF1E0;
-       }
-   .o-header__drawer,
-   .o-header {
-     font-family: MetricWeb,sans-serif;
-     font-size: 18px;
-   }
-   .o-header__top-logo {
-     margin-top: 10px;
-     margin-bottom: 10px;
-   }
-   .o-footer {
-     font-family: MetricWeb,sans-serif;
-     font-size: 12px;
-   }
-   .disclaimer {
-     width: 100%;
-     border-bottom: 3px solid #09a25c;
-     background-color: #DADADA;
-     font-family: MetricWeb,sans-serif;
-     font-size: 13px;
-   }
-   .disclaimer__left {
-     align-self: center;
-     -ms-flex-item-align: center;
-     margin-top: -2%;
-   }
-   .disclaimer__paid_post {
-     display: block;
-     text-indent: -9999px;
-     overflow: hidden;
-     width: 45px;
-     height: 45px;
-     background-repeat: no-repeat;
-     background-image: url(data:image/png;base64,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);
-     float:left
-   }
-   .disclaimer__sponsor-text {
-     display: inline;
-     position: relative;
-     top: 5px;
-   }
-   .story .section-header {
-     position: relative!important;
-   }
-   .disclaimer__sponsor {
-     position: relative;
-   }
-   .disclaimer__sponsor-wide {
-     display: none;
-   }
-   @media(min-width: 740px) {
-     .disclaimer__left {
-       margin-top: 0px;
-     }
-     .disclaimer__paid_post {
-       display: inline;
-     }
-     .disclaimer__sponsor {
-       display: none;
-     }
-     .disclaimer__sponsor-wide {
-       display: block;
-       position: relative;
-       left: 5px;
-       top: 30px;
-     }
-     .disclaimer__sponsor-text {
-       display: inline;
-       position: relative;
-       left: -1%;
-       top: 1%;
-     }
-   }
-   </style>
+	<!--[if lte IE 9]>
+	<style>
+		.disclaimer__left {
+			margin-top: 10px;
+		}
+	</style>
+	<![endif]-->
 
- <!--[if lte IE 9]>
-   <style>
-     .disclaimer__left {
-       margin-top: 10px;
-     }
-   </style>
- <![endif]-->
+	<!--[if lt IE 9]>
+	<style>
+		.o-header__top-logo {
+			height: 40px;
+			width: 500px;
+		}
+	</style>
+	<![endif]-->
 
- <!--[if lt IE 9]>
- <style>
-   .o-header__top-logo {
-     height: 40px;
-     width: 500px;
-   }
- </style>
- <![endif]-->`;
+	<style>
+		* {
+			box-sizing: border-box;
+		}
 
-  const headerSnippet = `
+		/* Hide any enhanced experience content when in core mode, and vice versa. */
+		.core .o--if-js,
+		.enhanced .o--if-no-js { display: none !important; }
+
+		body, html {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+
+			background-color: #FFF1E0;
+		}
+
+		.o-header__drawer,
+		.o-header {
+			font-family: MetricWeb,sans-serif;
+			font-size: 18px;
+		}
+
+		.o-header__top-logo {
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+
+		.o-footer {
+			font-family: MetricWeb,sans-serif;
+			font-size: 12px;
+		}
+
+
+		.disclaimer {
+		}
+
+		.disclaimer__box {
+			position: absolute;
+			top: 88px;
+			display: block;
+			padding: 10px;
+			background-color: white;
+			font-family: MetricWeb, sans-serif;
+			font-size: 13px;
+			border: 1px solid #DADADA;
+			cursor: pointer;
+			z-index: 1;
+		}
+
+		.disclaimer__box.sticky {
+			position: fixed;
+			top: 0;
+		}
+
+
+		.disclaimer.disclaimer--fixed {
+			position: fixed;
+			top: 10px;
+		}
+
+		.disclaimer__paid-post {
+			background-color: #008040;
+			color: white;
+			display: inline-block;
+			font-size: 12px;
+			line-height: normal;
+			padding: 0.2em 0.6em;
+			vertical-align: -1px;
+		}
+
+		.disclaimer__sponsor {
+			font-weight: 600;
+		}
+
+		.disclaimer__info {
+			position: relative;
+			display: inline-block;
+			margin-left: 10px;
+			padding: 0 6px;
+			border: 2px solid #CCC;
+			border-radius: 20px;
+			color: #CCC;
+			font-size: 13px;
+			text-decoration: none;
+		}
+
+		.disclaimer .o-tooltip-content {
+			font-size: 13px;
+			margin-right: 50px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+
+		.disclaimer .o-tooltip-content sup {
+			font-size: 9px;
+			position: absolute;
+			top: 4px;
+		}
+
+		.o-tooltip--arrow-above.sticky {
+			position: fixed;
+			top: 52px !important;
+		}
+
+		.o-tooltip--arrow-left.sticky {
+			position: fixed;
+			top: 4px !important;
+		}
+
+
+		@media(max-width: 739px) {
+			.disclaimer__box {
+				top:48px;
+				left:0;
+			}
+
+			.disclaimer .o-tooltip {
+				margin: 0 10px;
+			}
+		}
+	</style>`;
+
+const headerSnippet = `
     <header class="o-header" data-o-component="o-header" data-o-header--no-js="">
-
-  	<div class="o-header__row o-header__top">
-  		<div class="o-header__container">
-  			<div class="o-header__top-wrapper">
-  				<div class="o-header__top-column o-header__top-column--left">
-
-  				</div>
-  				<div class="o-header__top-column o-header__top-column--center">
-  					<a class="o-header__top-logo" href="/" title="Go to Financial Times homepage">
-  						<span class="o-header__visually-hidden">Financial Times</span>
-  					</a>
-  				</div>
-          <div class="o-header__top-column o-header__top-column--right"></div>
-
-  			</div>
-  		</div>
-  	</div>
-
-  </header>
-  <section class="disclaimer">
-	<div class="o-grid-container">
-		<div class="o-grid-row">
-			<div class="disclaimer__left first-column" data-o-grid-colspan="2 S3" aria-hidden="true">
-				<span class="disclaimer__paid_post">PAID POST</span>
-        <span class="disclaimer__sponsor-wide">BY
-          <span class="disclaimer__sponsor-name">[[SPONSOR]]</span>
-        </span>
-        <p></p>
-			</div>
-				<div class="disclaimer__sponsor-text second-column" data-o-grid-colspan="10 S7">
-            <span class="disclaimer__sponsor">BY
-              <span class="disclaimer__sponsor-name">[[SPONSOR]]</span>
-            </span>
-            <br>
-					This page was produced by FT<sup>2</sup>, the advertising department of the Financial Times.  The news and editorial staff of the Financial Times had no role in its preparation.
-          <p></p>
+	<div class="o-header__row o-header__top">
+		<div class="o-header__container">
+			<div class="o-header__top-wrapper">
+				<section class="disclaimer" id="disclaimer">
+					<div class="disclaimer__box" id="paid-post-tooltip-target">
+						<span class="disclaimer__paid-post">Paid Post</span>
+						<span class="disclaimer__sponsor">[[SPONSOR]]</span>
+						<span class="disclaimer__info">i</span>
+					</div>
+				</section>
+				<div id="paid-post-tooltip" data-o-component="o-tooltip"
+					 data-o-tooltip-position="right"
+					 data-o-tooltip-target="paid-post-tooltip-target"
+					 data-o-tooltip-show-on-construction="true"
+					 data-o-tooltip-close-after="5"
+					 data-o-tooltip-toggle-on-click="true">
+					<div class="o-tooltip-content">
+						<p>This page was produced by FT<sup>2</sup>, the advertising department of the Financial Times.  The news and editorial staff of the Financial Times had no role in its preparation.</p>
+					</div>
 				</div>
+				<div class="o-header__top-column o-header__top-column--left">
+					<a href="#o-header-drawer" class="o-header__top-link o-header__top-link--menu" aria-controls="o-header-drawer">
+						<span class="o-header__top-link-label">Menu</span>
+					</a>
+				</div>
+				<div class="o-header__top-column o-header__top-column--center">
+					<a class="o-header__top-logo" href="/" title="Go to Financial Times homepage">
+						<span class="o-header__visually-hidden">Financial Times</span>
+					</a>
+				</div>
+				<div class="o-header__top-column o-header__top-column--right"></div>
+
+			</div>
+		</div>
+	</div>`;
+
+const footer = `<footer class="o-footer o-footer--theme-dark" data-o-component="o-footer" data-o-footer--no-js="">
+	<div class="o-footer__container">
+
+		<div class="o-footer__copyright" role="contentinfo">
+			<small>
+				<abbr title="Financial Times" aria-label="F T">FT</abbr> and &#x2018;Financial Times&#x2019; are trademarks of The Financial Times Ltd.<br>
+				The Financial Times and its journalism are subject to a self-regulation regime under the <a href="http://www.ft.com/editorialcode" aria-label="F T Editorial Code of Practice">FT Editorial Code of Practice</a>.
+			</small>
+		</div>
+
+	</div>
+	<div class="o-footer__brand">
+		<div class="o-footer__container">
+			<div class="o-footer__brand-logo"></div>
 		</div>
 	</div>
-  </section>
-`;
+</footer>`;
 
-  const footer = `<footer class="o-footer o-footer--theme-dark" data-o-component="o-footer" data-o-footer--no-js="">
-  	<div class="o-footer__container">
+const footScripts = `<script id="ft-js">
+	/* FT Analytics */
+	(function(src) {
+    function otrackinginit() {
+			var oTracking = window.Origami['o-tracking'];
+			if(!oTracking) { return; };
+			var config_data = {
+				server: 'https://spoor-api.ft.com/px.gif',
+				context: {
+					product: 'paid posts'
+				},
+				user: {
+					ft_session: oTracking.utils.getValueFromCookie(/FTSession=([^;]+)/)
+				}
+			};
+			// oTracking
+			var oTracking = Origami['o-tracking'];
+			// Setup
+			oTracking.init(config_data);
+			// Page
+			oTracking.page({
+				content: {
+					asset_type: 'page'
+				}
+			});
+		}
 
-  		<div class="o-footer__copyright" role="contentinfo">
-  			<small>
-  				<abbr title="Financial Times" aria-label="F T">FT</abbr> and &#x2018;Financial Times&#x2019; are trademarks of The Financial Times Ltd.<br>
-  				The Financial Times and its journalism are subject to a self-regulation regime under the <a href="http://www.ft.com/editorialcode" aria-label="F T Editorial Code of Practice">FT Editorial Code of Practice</a>.
-  			</small>
-  		</div>
+		function throttle(func, wait) {
+			let last, timer;
 
-  	</div>
-  	<div class="o-footer__brand">
-  		<div class="o-footer__container">
-  			<div class="o-footer__brand-logo"></div>
-  		</div>
-  	</div>
-  </footer>
-  `;
+			return function() {
+				const now = +new Date;
+				const args = arguments;
+				const context = this;
 
-  $('head').prepend(headSnippet);
-  $('body').prepend(headerSnippet);
-  $('body').append(footer);
-  // let sponsor = ($('meta[name=author]') && $('meta[name=author]').attr('content')) ? $('meta[name=author]').attr('content').split(',') : null;
-  // if (sponsor) {
-  //   $('.disclaimer__sponsor-name').innerHTML = sponsor[0];
-  // }
+				if(last && now < last + wait) {
+					clearTimeout(timer);
+					timer = setTimeout(function() {
+						last = now;
+						func.apply(context, args);
+					}, wait);
+				}
+				else {
+					last = now;
+					func.apply(context, args);
+				}
+			}
+		}
 
-  return $;
+		function stickyOnScroll() {
+			// Sticky ads
+			var adTargetEl = document.getElementById('paid-post-tooltip-target');
+			var adContentEl = document.getElementById('paid-post-tooltip');
+			var headerEl = document.getElementsByClassName('o-header')[0];
+			var adPosTop = headerEl.getBoundingClientRect().height;
+			var closeEl = document.getElementsByClassName('o-tooltip-close')[0];
+			function closeTooltip() {
+				closeEl.dispatchEvent(new Event('click', {"bubbles":true }));
+			}
+
+			window.addEventListener('scroll', throttle(closeTooltip, 150));
+			window.addEventListener('scroll', function() {
+				var lastScrollPos = window.scrollY;
+				if(lastScrollPos > adPosTop) {
+					adTargetEl.classList.add('sticky');
+					adContentEl.classList.add('sticky');
+				} else {
+					adTargetEl.classList.remove('sticky');
+					adContentEl.classList.remove('sticky');
+				}
+			});
+		}
+
+		// Need to make some changes to the DOM before initialising the
+    // origami components so we fire off the o.DOMContentLoaded when
+    // we're ready.
+    document.addEventListener('DOMContentLoaded', function() {
+      if(window.innerWidth < 740) {
+        document.getElementById('paid-post-tooltip').setAttribute('data-o-tooltip-position', 'below');
+      }
+    });
+
+		if (cutsTheMustard) {
+			var o = document.createElement('script');
+			o.async = o.defer = true;
+			o.src = src;
+			o.id = "origami-js";
+			var s = document.getElementsByTagName('script')[0];
+			if (o.hasOwnProperty('onreadystatechange')) {
+				o.onreadystatechange = function() {
+					if (o.readyState === "loaded") {
+						otrackinginit();
+						document.dispatchEvent(new CustomEvent('o.DOMContentLoaded'));
+						stickyOnScroll();
+					}
+				};
+			} else {
+				o.onload = function() {
+					otrackinginit();
+					document.dispatchEvent(new CustomEvent('o.DOMContentLoaded'));
+					stickyOnScroll();
+				}
+			}
+			s.parentNode.insertBefore(o, s);
+		}
+		
+		// The mustard is NOT cut
+		else {
+		  // Add fallback if browsers don't cut the mustard -->
+		  var img = new Image();
+			img.src = 'https://spoor-api.ft.com/px.gif?data=%7B%22category%22:%22page%22,%20%22action%22:%22view%22,%20%22system%22:%7B%22apiKey%22:%22qUb9maKfKbtpRsdp0p2J7uWxRPGJEP%22,%22source%22:%22o-tracking%22,%22version%22:%221.0.0%22%7D,%22context%22:%7B%22product%22:%22paid-post%22,%22content%22:%7B%22asset_type%22:%22page%22%7D%7D%7D';
+		}
+	}('https://build.origami.ft.com/v2/bundles/js?modules=o-grid@^4.3.3,o-header@^7.0.4,o-footer@^6.0.2,o-typography@^5.1.1,o-colors@^4.1.1,o-tooltip@^2.2.3&autoinit=0'));
+</script>
+<noscript>
+	<img src="https://spoor-api.ft.com/px.gif?data=%7B%22category%22:%22page%22,%20%22action%22:%22view%22,%20%22system%22:%7B%22apiKey%22:%22qUb9maKfKbtpRsdp0p2J7uWxRPGJEP%22,%22source%22:%22o-tracking%22,%22version%22:%221.0.0%22%7D,%22context%22:%7B%22product%22:%22paid-post%22,%22content%22:%7B%22asset_type%22:%22page%22%7D%7D%7D"/>
+</noscript>`;
+
+const getNavHtml = navItems => {
+  var navHtml = `
+  <div class="o-header__drawer" id="o-header-drawer" data-o-header-drawer="" data-o-header-drawer--no-js="">
+    <div class="o-header__drawer-inner">
+
+    <div class="o-header__drawer-tools">
+        <a class="o-header__drawer-tools-logo" href="https://www.ft.com/">
+            <span class="o-header__visually-hidden">Financial Times</span>
+        </a>
+        <button type="button" class="o-header__drawer-tools-close" aria-controls="o-header-drawer">
+            <span class="o-header__visually-hidden">Close</span>
+        </button>
+    </div>
+
+    <nav class="o-header__drawer-menu o-header__drawer-menu--primary" role="navigation" aria-label="Primary navigation">
+
+        <ul class="o-header__drawer-menu-list">`;
+  navItems.forEach(navItem => {
+    navHtml += `<li class="o-header__drawer-menu-item ">
+                <a class="o-header__drawer-menu-link" href="https://next.ft.com${navItem.item.href}">${navItem.item.name}</a>
+            </li>`;
+  });
+
+  navHtml += `</ul></nav></div></div>`;
+
+  return navHtml;
+};
+
+const getNavData = () => {
+  return fetch('http://ft-next-navigation.s3-website-eu-west-1.amazonaws.com/json/external.json')
+    .then(response => {
+      return response.json();
+    })
+    .then(json => {
+      return json.native_ad_drawer;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+module.exports = $ => {
+  const navData = getNavData();
+  return navData.then(data => {
+    $('head').prepend(headSnippet);
+    $('body').prepend(headerSnippet);
+    $('body').append(footer);
+    $('body').append(getNavHtml(data));
+    $('body').append(footScripts);
+
+    return $;
+  });
 };
