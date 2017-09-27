@@ -8,7 +8,7 @@ const headSnippet = `
   
     <title>[[ REPLACE WITH YOUR TITLE]]</title>
     <link rel="stylesheet" href="https://build.origami.ft.com/v2/bundles/css?modules=o-grid@^4.2.0,o-header@^7.0.4,o-footer@^6.0.2,o-typography@^5.0.1,o-colors@^4.0.1,o-tooltip@^2.2.3" />
-    <script>
+    <script id="cuts-the-mustard">
         var cutsTheMustard = ('querySelector' in document && 'localStorage' in window && 'addEventListener' in window);
         if (cutsTheMustard) {
             // Swap the 'core' class on the HTML element for an 'enhanced' one
@@ -16,7 +16,7 @@ const headSnippet = `
             document.documentElement.className = document.documentElement.className.replace(/\bcore\b/g, 'enhanced');
         }
     </script>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js" id="polyfill"></script>
 
 	<!--[if lte IE 9]>
 	<style>
@@ -216,11 +216,10 @@ const footer = `<footer class="o-footer o-footer--theme-dark" data-o-component="
 	</div>
 </footer>`;
 
-const footScripts = `<script>
+const footScripts = `<script id="ft-js">
 	/* FT Analytics */
 	(function(src) {
-
-		function otrackinginit() {
+    function otrackinginit() {
 			var oTracking = window.Origami['o-tracking'];
 			if(!oTracking) { return; };
 			var config_data = {
@@ -290,6 +289,15 @@ const footScripts = `<script>
 			});
 		}
 
+		// Need to make some changes to the DOM before initialising the
+    // origami components so we fire off the o.DOMContentLoaded when
+    // we're ready.
+    document.addEventListener('DOMContentLoaded', function() {
+      if(window.innerWidth < 740) {
+        document.getElementById('paid-post-tooltip').setAttribute('data-o-tooltip-position', 'below');
+      }
+    });
+
 		if (cutsTheMustard) {
 			var o = document.createElement('script');
 			o.async = o.defer = true;
@@ -313,31 +321,14 @@ const footScripts = `<script>
 			}
 			s.parentNode.insertBefore(o, s);
 		}
-	}('https://build.origami.ft.com/v2/bundles/js?modules=o-grid@^4.3.3,o-header@^7.0.4,o-footer@^6.0.2,o-typography@^5.1.1,o-colors@^4.1.1,o-tooltip@^2.2.3&autoinit=0'));
-</script>
-
-<script>
-	// Need to make some changes to the DOM before initialising the
-	// origami components so we fire off the o.DOMContentLoaded when
-	// we're ready.
-	document.addEventListener('DOMContentLoaded', function() {
-		if(window.innerWidth < 740) {
-			document.getElementById('paid-post-tooltip').setAttribute('data-o-tooltip-position', 'below');
-		}
-	});
-
-</script>
-
-<!-- Add fallback if browsers don't cut the mustard -->
-
-<script>
-	(function() {
-		if(!cutsTheMustard) {
-			var img = new Image();
+		
+		// The mustard is NOT cut
+		else {
+		  // Add fallback if browsers don't cut the mustard -->
+		  var img = new Image();
 			img.src = 'https://spoor-api.ft.com/px.gif?data=%7B%22category%22:%22page%22,%20%22action%22:%22view%22,%20%22system%22:%7B%22apiKey%22:%22qUb9maKfKbtpRsdp0p2J7uWxRPGJEP%22,%22source%22:%22o-tracking%22,%22version%22:%221.0.0%22%7D,%22context%22:%7B%22product%22:%22paid-post%22,%22content%22:%7B%22asset_type%22:%22page%22%7D%7D%7D';
 		}
-
-	}());
+	}('https://build.origami.ft.com/v2/bundles/js?modules=o-grid@^4.3.3,o-header@^7.0.4,o-footer@^6.0.2,o-typography@^5.1.1,o-colors@^4.1.1,o-tooltip@^2.2.3&autoinit=0'));
 </script>
 <noscript>
 	<img src="https://spoor-api.ft.com/px.gif?data=%7B%22category%22:%22page%22,%20%22action%22:%22view%22,%20%22system%22:%7B%22apiKey%22:%22qUb9maKfKbtpRsdp0p2J7uWxRPGJEP%22,%22source%22:%22o-tracking%22,%22version%22:%221.0.0%22%7D,%22context%22:%7B%22product%22:%22paid-post%22,%22content%22:%7B%22asset_type%22:%22page%22%7D%7D%7D"/>
