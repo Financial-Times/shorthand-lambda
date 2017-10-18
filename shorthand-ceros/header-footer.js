@@ -5,8 +5,6 @@ const headSnippet = `
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-    <title>[[ REPLACE WITH YOUR TITLE]]</title>
     <link rel="stylesheet" href="https://build.origami.ft.com/v2/bundles/css?modules=o-grid@^4.2.0,o-header@^7.0.4,o-footer@^6.0.2,o-typography@^5.0.1,o-colors@^4.0.1,o-tooltip@^2.2.3" />
     <script id="cuts-the-mustard">
         var cutsTheMustard = ('querySelector' in document && 'localStorage' in window && 'addEventListener' in window);
@@ -148,7 +146,7 @@ const headSnippet = `
 		}
 
 
-		@media(max-width: 739px) {
+		@media(max-width: 489px) {
 			.disclaimer__box {
 				top:48px;
 				left:0;
@@ -157,6 +155,25 @@ const headSnippet = `
 			.disclaimer .o-tooltip {
 				margin: 0 10px;
 			}
+		}
+		
+		@media(min-width: 490px) and (max-width: 739px) {
+		    .disclaimer__box {
+          top:52px;
+          left:0;
+        }
+		}
+		@media(min-width: 740px) and (max-width: 979px) {
+		    .disclaimer__box {
+          top:88px;
+          left:0;
+        }
+		}
+		@media(min-width: 980px) {
+		    .disclaimer__box {
+          top:100px;
+          left:0;
+        }
 		}
 	</style>`;
 
@@ -168,7 +185,7 @@ const headerSnippet = `
 				<section class="disclaimer" id="disclaimer">
 					<div class="disclaimer__box" id="paid-post-tooltip-target">
 						<span class="disclaimer__paid-post">Paid Post</span>
-						<span class="disclaimer__sponsor">[[SPONSOR]]</span>
+						<span class="disclaimer__sponsor">[[REPLACED FROM META TAG WITH name="tooltip:sponsor" in uploaded page]]</span>
 						<span class="disclaimer__info">i</span>
 					</div>
 				</section>
@@ -334,8 +351,8 @@ const footScripts = `<script id="ft-js">
 	<img src="https://spoor-api.ft.com/px.gif?data=%7B%22category%22:%22page%22,%20%22action%22:%22view%22,%20%22system%22:%7B%22apiKey%22:%22qUb9maKfKbtpRsdp0p2J7uWxRPGJEP%22,%22source%22:%22o-tracking%22,%22version%22:%221.0.0%22%7D,%22context%22:%7B%22product%22:%22paid-post%22,%22content%22:%7B%22asset_type%22:%22page%22%7D%7D%7D"/>
 </noscript>`;
 
-const getNavHtml = navItems => {
-  var navHtml = `
+function getNavHtml(navItems) {
+  let navHtml = `
   <div class="o-header__drawer" id="o-header-drawer" data-o-header-drawer="" data-o-header-drawer--no-js="">
     <div class="o-header__drawer-inner">
 
@@ -360,9 +377,9 @@ const getNavHtml = navItems => {
   navHtml += `</ul></nav></div></div>`;
 
   return navHtml;
-};
+}
 
-const getNavData = () => {
+function getNavData() {
   return fetch('http://ft-next-navigation.s3-website-eu-west-1.amazonaws.com/json/external.json')
     .then(response => {
       return response.json();
@@ -373,7 +390,14 @@ const getNavData = () => {
     .catch(err => {
       console.log(err);
     });
-};
+}
+
+function replaceTooltipSponsor($) {
+  const sponsor = $('meta[name="tooltip:sponsor"]').attr('content');
+  $('.disclaimer__sponsor').text(sponsor);
+
+  $('meta[name="tooltip:sponsor"]').remove();
+}
 
 module.exports = $ => {
   const navData = getNavData();
@@ -383,6 +407,7 @@ module.exports = $ => {
     $('body').append(footer);
     $('body').append(getNavHtml(data));
     $('body').append(footScripts);
+    replaceTooltipSponsor($);
 
     return $;
   });
