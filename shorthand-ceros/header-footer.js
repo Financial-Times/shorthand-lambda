@@ -120,6 +120,7 @@ const headSnippet = `
 			color: #CCC;
 			font-size: 13px;
 			text-decoration: none;
+			line-height: 14px;
 		}
 
 		.disclaimer .o-tooltip-content {
