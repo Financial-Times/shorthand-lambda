@@ -70,6 +70,7 @@ const headSnippet = `
 
 
 		.disclaimer {
+		    position: static !important;
 		}
 
 		.disclaimer__box {
@@ -82,7 +83,7 @@ const headSnippet = `
 			font-size: 13px;
 			border: 1px solid #DADADA;
 			cursor: pointer;
-			z-index: 1;
+			z-index: 99999;
 		}
 
 		.disclaimer__box.sticky {
