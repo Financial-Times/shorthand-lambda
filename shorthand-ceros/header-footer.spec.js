@@ -82,11 +82,11 @@ describe('headerFooter', () => {
     });
   });
 
-  context.only('Tooltip', () => {
+  context('Tooltip', () => {
     it('should replace the tooltip sponsor', () => {
       return headerFooter($, ArgsFixture).then(result => {
         expect(result('.disclaimer__sponsor').text()).to.equal('HIUNDAI');
-        expect(result('meta[name="tooltip:sponsor"]')).to.not.be.ok;
+        expect(result('meta[name="tooltip:sponsor"]').text()).to.not.be.ok;
       });
     });
   });
