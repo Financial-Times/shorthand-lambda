@@ -171,12 +171,6 @@ const headSnippet = `
           left:0;
         }
 		}
-		@media(min-width: 980px) {
-		    .disclaimer__box {
-          top:100px;
-          left:0;
-        }
-		}
 	</style>`;
 
 const headerSnippet = `
