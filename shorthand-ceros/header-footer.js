@@ -232,30 +232,6 @@ const footer = `<footer class="o-footer o-footer--theme-dark" data-o-component="
 const footScripts = `<script id="ft-js">
 	/* FT Analytics */
 	(function(src) {
-    function otrackinginit() {
-			var oTracking = window.Origami['o-tracking'];
-			if(!oTracking) { return; };
-			var config_data = {
-				server: 'https://spoor-api.ft.com/px.gif',
-				context: {
-					product: 'paid posts'
-				},
-				user: {
-					ft_session: oTracking.utils.getValueFromCookie(/FTSession=([^;]+)/)
-				}
-			};
-			// oTracking
-			var oTracking = Origami['o-tracking'];
-			// Setup
-			oTracking.init(config_data);
-			// Page
-			oTracking.page({
-				content: {
-					asset_type: 'page'
-				}
-			});
-		}
-
 		function throttle(func, wait) {
 			let last, timer;
 
@@ -320,14 +296,12 @@ const footScripts = `<script id="ft-js">
 			if (o.hasOwnProperty('onreadystatechange')) {
 				o.onreadystatechange = function() {
 					if (o.readyState === "loaded") {
-						otrackinginit();
 						document.dispatchEvent(new CustomEvent('o.DOMContentLoaded'));
 						stickyOnScroll();
 					}
 				};
 			} else {
 				o.onload = function() {
-					otrackinginit();
 					document.dispatchEvent(new CustomEvent('o.DOMContentLoaded'));
 					stickyOnScroll();
 				}
@@ -389,10 +363,8 @@ function getNavData() {
 }
 
 function replaceTooltipSponsor($) {
-  const sponsor = $('meta[name="tooltip:sponsor"]').attr('content');
-  $('.disclaimer__sponsor').text(sponsor);
-
-  $('meta[name="tooltip:sponsor"]').remove();
+  const sponsor = $('meta[name="sponsor"]').attr('content');
+  $('.disclaimer__sponsor').text(`BY ${sponsor}`);
 }
 
 module.exports = $ => {

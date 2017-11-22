@@ -36,10 +36,16 @@ const oTrackingScript = uuid => `
       function oTrackinginit() {
           // oTracking
           var oTracking = Origami['o-tracking'];
+          var sponsor = document.querySelector('meta[name="sponsor"]');
           var config_data = {
               server: 'https://spoor-api.ft.com/px.gif',
               context: {
-                  product: 'shorthand-ceros'
+                  product: 'paid-post',
+                  content: {
+                    title: document.querySelector('title').textContent,
+                    parent: document.querySelector('meta[name="parent"]').getAttribute('content'),
+                    sponsor: sponsor ? sponsor.getAttribute('content') : null
+                  }
               },
               user: {
                   ft_session: oTracking.utils.getValueFromCookie(/FTSession=([^;]+)/)
