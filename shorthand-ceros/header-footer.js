@@ -229,7 +229,7 @@ const footer = `<footer class="o-footer o-footer--theme-dark" data-o-component="
 	</div>
 </footer>`;
 
-const footScripts = `<script id="ft-js">
+const footScripts = (origamiScriptUrl) => `<script id="ft-js">
 	/* FT Analytics */
 	(function(src) {
 		function throttle(func, wait) {
@@ -277,7 +277,7 @@ const footScripts = `<script id="ft-js">
 				}
 			});
 		}
-
+		
 		// Need to make some changes to the DOM before initialising the
     // origami components so we fire off the o.DOMContentLoaded when
     // we're ready.
@@ -315,7 +315,7 @@ const footScripts = `<script id="ft-js">
 		  var img = new Image();
 			img.src = 'https://spoor-api.ft.com/px.gif?data=%7B%22category%22:%22page%22,%20%22action%22:%22view%22,%20%22system%22:%7B%22apiKey%22:%22qUb9maKfKbtpRsdp0p2J7uWxRPGJEP%22,%22source%22:%22o-tracking%22,%22version%22:%221.0.0%22%7D,%22context%22:%7B%22product%22:%22paid-post%22,%22content%22:%7B%22asset_type%22:%22page%22%7D%7D%7D';
 		}
-	}('https://build.origami.ft.com/v2/bundles/js?modules=o-grid@^4.3.3,o-header@^7.0.4,o-footer@^6.0.2,o-typography@^5.1.1,o-colors@^4.1.1,o-tooltip@^2.2.3&autoinit=0'));
+	}("${origamiScriptUrl}"));
 </script>
 <noscript>
 	<img src="https://spoor-api.ft.com/px.gif?data=%7B%22category%22:%22page%22,%20%22action%22:%22view%22,%20%22system%22:%7B%22apiKey%22:%22qUb9maKfKbtpRsdp0p2J7uWxRPGJEP%22,%22source%22:%22o-tracking%22,%22version%22:%221.0.0%22%7D,%22context%22:%7B%22product%22:%22paid-post%22,%22content%22:%7B%22asset_type%22:%22page%22%7D%7D%7D"/>
@@ -349,6 +349,34 @@ function getNavHtml(navItems) {
   return navHtml;
 }
 
+const origamiModules = [
+  {
+    name: "o-grid",
+    version: "4.3.3"
+  },
+  {
+    name: "o-header",
+    version: "7.0.4"
+  },
+  {
+    name: "o-footer",
+    version: "6.0.2"
+  },
+  {
+    name: "o-typography",
+    version: "5.1.1"
+  },
+  {
+    name: "o-colors",
+    version: "4.1.1"
+  },
+  {
+    name: "o-tooltip",
+    version: "2.2.3"
+  }
+];
+
+
 function getNavData() {
   return fetch('http://ft-next-navigation.s3-website-eu-west-1.amazonaws.com/json/external.json')
     .then(response => {
@@ -367,6 +395,61 @@ function replaceTooltipSponsor($) {
   $('.disclaimer__sponsor').text(`BY ${sponsor}`);
 }
 
+/**
+ * We allow a user to pass in an origami script tag.
+ * We aggregate the modules with the basic ones we need for this transform
+ * and output the final URL
+ * @param $
+ * @param type ('js' | 'css')
+ */
+function getOrigamiUrl($, type) {
+  const customOrigamiModules = _getCustomOrigamiModules($);
+  return _buildOrigamiUrl(_combineModules(origamiModules, customOrigamiModules), type);
+}
+
+
+// Helper functions for the above
+function _formatModules(modules) {
+  return modules.map((module => {
+    const m = module.split("@");
+    return {
+      name: m[0],
+      version: m.length === 2 ? m[1].substring(1) : null
+    };
+  }));
+}
+
+function _getCustomOrigamiModules($) {
+  const oScript = $('script[src^="https://www.ft.com/__origami/service/build"]');
+  const oModules = oScript.attr('src').match(/o-([^&]+)/);
+  if(oModules.length) {
+    return _formatModules(oModules[0].split(','));
+  }
+  return null;
+}
+
+function _combineModules(basicModules, customModules) {
+  const modules = basicModules;
+  customModules.forEach(item => {
+    let found = basicModules.find((obj) => {
+      return obj.name === item.name;
+    });
+    if(!found) modules.push(item);
+  });
+
+  return modules;
+}
+
+
+// Type must be `js` or `css` otherwise you'll get a broken url
+function _buildOrigamiUrl(modules, type) {
+  const moduleStrings = modules.map(module => {
+    return module.version ? `${module.name}@^${module.version}` : module.name;
+  });
+
+  return `https://www.ft.com/__origami/service/build/v2/bundles/${type}?modules=${moduleStrings.join(',')}&autoinit=0`;
+}
+
 module.exports = $ => {
   const navData = getNavData();
   return navData.then(data => {
@@ -374,7 +457,7 @@ module.exports = $ => {
     $('body').prepend(headerSnippet);
     $('body').append(footer);
     $('body').append(getNavHtml(data));
-    $('body').append(footScripts);
+    $('body').append(footScripts(getOrigamiUrl($, 'js')));
     replaceTooltipSponsor($);
 
     return $;

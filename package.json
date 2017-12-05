@@ -8,7 +8,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "test": "xo && nyc --reporter=lcov --reporter=text mocha shorthand-ceros/**/*.spec.js",
+    "test": "mocha shorthand-ceros/**/*.spec.js",
     "test:watch": "mocha -w shorthand-ceros/**/*.spec.js"
   },
   "xo": {
@@ -35,8 +35,8 @@
     "aws-sdk": "^2.22.0",
     "axios": "^0.15.3",
     "cheerio": "^0.22.0",
-    "uuid": "^2.0.3",
-    "node-fetch": "^1.7.3"
+    "node-fetch": "^1.7.3",
+    "uuid": "^2.0.3"
   },
   "devDependencies": {
     "aws-lambda-test-utils": "^1.0.2",

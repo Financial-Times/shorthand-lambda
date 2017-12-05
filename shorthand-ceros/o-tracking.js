@@ -33,17 +33,19 @@ const polyfillScript = `
 const oTrackingScript = uuid => `
   <!-- INIT and make a page request -->
   <script id="o-tracking">
+      
       function oTrackinginit() {
           // oTracking
           var oTracking = Origami['o-tracking'];
           var sponsor = document.querySelector('meta[name="sponsor"]');
+          var parent = document.querySelector('meta[name="parent"]');
           var config_data = {
               server: 'https://spoor-api.ft.com/px.gif',
               context: {
                   product: 'paid-post',
                   content: {
                     title: document.querySelector('title').textContent,
-                    parent: document.querySelector('meta[name="parent"]').getAttribute('content'),
+                    parent: parent ? parent.getAttribute('content') : null,
                     sponsor: sponsor ? sponsor.getAttribute('content') : null
                   }
               },
