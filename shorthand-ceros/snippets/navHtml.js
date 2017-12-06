@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = (navItems) => {
   let navHtml = `
   <div class="o-header__drawer" id="o-header-drawer" data-o-header-drawer="" data-o-header-drawer--no-js="">

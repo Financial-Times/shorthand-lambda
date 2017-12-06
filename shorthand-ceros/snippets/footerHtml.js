@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = `<footer class="o-footer o-footer--theme-dark" data-o-component="o-footer" data-o-footer--no-js="">
 	<div class="o-footer__container">
 

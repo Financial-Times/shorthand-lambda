@@ -57,12 +57,13 @@ function replaceTooltipSponsor($) {
 
 
 function getTrackingPageOptions(uuid) {
-  return {
+  const options = {
     content: {
-      ...uuid,
       asset_type: 'page'
     }
-  }
+  };
+  if(uuid) { options.uuid = uuid }
+  return options;
 }
 
 /**

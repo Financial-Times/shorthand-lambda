@@ -9,7 +9,6 @@ const resolve = require('path').resolve;
 const chai = require('chai');
 const cheerio = require('cheerio');
 const headerFooter = require('./header-footer');
-const semverCompare = require('semver-compare');
 
 chai.use(require('sinon-chai'));
 

@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = `
     <header class="o-header" data-o-component="o-header" data-o-header--no-js="">
 	<div class="o-header__row o-header__top">

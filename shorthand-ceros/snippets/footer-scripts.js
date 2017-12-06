@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = (origamiScriptUrl, trackingPageOptions) => `<script id="ft-js">
 	/* FT Analytics */
 	(function(src) {
