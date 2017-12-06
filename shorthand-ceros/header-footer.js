@@ -1,10 +1,10 @@
 'use strict';
 const fetch = require('node-fetch');
 const footerScripts = require('./snippets/footer-scripts');
-const headHtml = require('./snippets/head');
-const headerHtml = require('./snippets/headerHtml');
-const footerHtml = require('./snippets/footerHtml');
-const navHtml = require('./snippets/navHtml');
+const headScripts = require('./snippets/head-scripts');
+const headerHtml = require('./snippets/header-html');
+const footerHtml = require('./snippets/footer-html');
+const navHtml = require('./snippets/nav-html');
 
 const origamiModules = [
   {
@@ -93,13 +93,17 @@ function _formatModules(modules) {
 
 function _getCustomOrigamiModules($) {
   const oScript = $('script[src^="https://www.ft.com/__origami/service/build"]');
+  let modules = [];
+
   if(oScript.is('script') && oScript.attr('src')) {
     const oModules = oScript.attr('src').match(/o-([^&]+)/);
     if(oModules && oModules.length) {
-      return _formatModules(oModules[0].split(','));
+      modules = _formatModules(oModules[0].split(','));
     }
   }
-  return [];
+  // Delete the original script;
+  oScript.remove();
+  return modules;
 }
 
 function _combineModules(basicModules, customModules) {
@@ -117,11 +121,11 @@ function _combineModules(basicModules, customModules) {
 
 // Type must be `js` or `css` otherwise you'll get a broken url
 function _buildOrigamiUrl(modules, type) {
-  const moduleStrings = modules.map(module => {
+  const modulesWithVersion = modules.map(module => {
     return module.version ? `${module.name}@^${module.version}` : module.name;
   });
 
-  return `https://www.ft.com/__origami/service/build/v2/bundles/${type}?modules=${moduleStrings.join(',')}&autoinit=0`;
+  return `https://www.ft.com/__origami/service/build/v2/bundles/${type}?modules=${modulesWithVersion.join(',')}${ type === 'js' ? '&autoinit=0' : ''}`;
 }
 
 module.exports = ($, args) => {
@@ -129,7 +133,7 @@ module.exports = ($, args) => {
   const uuid = args && Object.prototype.hasOwnProperty.call(args, 'uuid') ? args.uuid : false;
 
   return navData.then(data => {
-    $('head').prepend(headHtml);
+    $('head').prepend(headScripts(getOrigamiUrl($, 'css')));
     $('body').prepend(headerHtml);
     $('body').append(footerHtml);
     $('body').append(navHtml(data));

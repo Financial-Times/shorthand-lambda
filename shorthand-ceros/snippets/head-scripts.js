@@ -1,10 +1,10 @@
 'use strict';
 
-module.exports = `
+module.exports = (origamiCssUrl) => `
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://build.origami.ft.com/v2/bundles/css?modules=o-grid@^4.2.0,o-header@^7.0.4,o-footer@^6.0.2,o-typography@^5.0.1,o-colors@^4.0.1,o-tooltip@^2.2.3" />
+    <link rel="stylesheet" href="${origamiCssUrl}" />
     <script id="cuts-the-mustard">
         var cutsTheMustard = ('querySelector' in document && 'localStorage' in window && 'addEventListener' in window);
         if (cutsTheMustard) {

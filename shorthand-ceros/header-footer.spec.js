@@ -55,7 +55,7 @@ describe('headerFooter', () => {
 
     it('adds the origami build service stylesheet', () => {
       return headerFooter($, ArgsFixture).then(result => {
-        expect(result('link[rel="stylesheet"]').attr('href')).to.include('https://build.origami.ft.com/v2/bundles/');
+        expect(result('link[rel="stylesheet"]').attr('href')).to.include('https://www.ft.com/__origami/service/build/v2/bundles/css');
       });
     });
   });
@@ -93,8 +93,11 @@ describe('headerFooter', () => {
 
   context('Origami scripts', () => {
     it('should aggregate origami scripts into one', () => {
+      const fixture = readFileSync(resolve(__dirname, '..', 'test-fixtures', 'index--origami-tag.html'), { encoding: 'utf8' });
+      $ = cheerio.load(fixture);
+
       return headerFooter($, ArgsFixture).then(result => {
-        // expect(origamiScript.attr('src')).to.equal('https://www.ft.com/__origami/service/build/v2/bundles/js?modules=o-grid@^4.3.3,o-header@^7.0.4,o-footer@^6.0.2,o-typography@^5.1.1,o-colors@^4.1.1,o-tooltip@^2.2.3,o-fonts@^3.0.1,o-share@^6.0.1,o-gallery@^3.0.2,o-normalise@^1.5.1,o-overlay@^2.1.4,o-buttons&autoinit=0');
+        expect(result('body').text()).to.include('https://www.ft.com/__origami/service/build/v2/bundles/js?modules=o-grid@^4.3.3,o-header@^7.0.4,o-footer@^6.0.2,o-typography@^5.1.1,o-colors@^4.1.1,o-tooltip@^2.2.3,o-tracking,o-fonts@^3.0.1,o-share@^6.0.1,o-gallery@^3.0.2,o-normalise@^1.5.1,o-overlay@^2.1.4,o-buttons&autoinit=0');
       });
     });
   });
