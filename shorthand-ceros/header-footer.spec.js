@@ -93,7 +93,7 @@ describe('headerFooter', () => {
   });
 
   context('Origami scripts', () => {
-    it.only('should aggregate origami scripts into one', () => {
+    it('should aggregate origami scripts into one', () => {
       return headerFooter($, ArgsFixture).then(result => {
         // expect(origamiScript.attr('src')).to.equal('https://www.ft.com/__origami/service/build/v2/bundles/js?modules=o-grid@^4.3.3,o-header@^7.0.4,o-footer@^6.0.2,o-typography@^5.1.1,o-colors@^4.1.1,o-tooltip@^2.2.3,o-fonts@^3.0.1,o-share@^6.0.1,o-gallery@^3.0.2,o-normalise@^1.5.1,o-overlay@^2.1.4,o-buttons&autoinit=0');
       });

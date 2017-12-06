@@ -39,6 +39,10 @@ const fixturePageNoUUID = readFileSync(
   resolve(__dirname, '..', 'test-fixtures', 'index--no-uuid.html'),
   { encoding: 'utf8' }
 );
+const fixturePageOrigamiTag = readFileSync(
+  resolve(__dirname, '..', 'test-fixtures', 'index--origami-tag.html'),
+  { encoding: 'utf8' }
+);
 
 let fixtureEventPage;
 let fixtureEventAsset;
@@ -67,6 +71,17 @@ describe('main.js', () => {
 
     it('processes HTML without UUID', done => {
       MockS3.prototype.getObject.yields(null, { Body: fixturePageNoUUID });
+      stubDeploy.returns(Promise.resolve('test-fixture-path/index.html'));
+
+      main(fixtureEventPage, {}, (err, result) => {
+        expect(err).not.to.exist;
+        expect(result).to.equal(resultStringBase + 'test-fixture-path/index.html');
+        done();
+      });
+    });
+
+    it('processes HTML with origami script tags', done => {
+      MockS3.prototype.getObject.yields(null, { Body: fixturePageOrigamiTag });
       stubDeploy.returns(Promise.resolve('test-fixture-path/index.html'));
 
       main(fixtureEventPage, {}, (err, result) => {

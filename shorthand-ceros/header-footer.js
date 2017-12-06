@@ -298,12 +298,14 @@ const footScripts = (origamiScriptUrl) => `<script id="ft-js">
 					if (o.readyState === "loaded") {
 						document.dispatchEvent(new CustomEvent('o.DOMContentLoaded'));
 						stickyOnScroll();
+						oTrackinginit();
 					}
 				};
 			} else {
 				o.onload = function() {
 					document.dispatchEvent(new CustomEvent('o.DOMContentLoaded'));
 					stickyOnScroll();
+					oTrackinginit();
 				}
 			}
 			s.parentNode.insertBefore(o, s);
@@ -373,6 +375,9 @@ const origamiModules = [
   {
     name: "o-tooltip",
     version: "2.2.3"
+  },
+  {
+    name: "o-tracking"
   }
 ];
 
@@ -421,11 +426,13 @@ function _formatModules(modules) {
 
 function _getCustomOrigamiModules($) {
   const oScript = $('script[src^="https://www.ft.com/__origami/service/build"]');
-  const oModules = oScript.attr('src').match(/o-([^&]+)/);
-  if(oModules.length) {
-    return _formatModules(oModules[0].split(','));
+  if(oScript.is('script') && oScript.attr('src')) {
+    const oModules = oScript.attr('src').match(/o-([^&]+)/);
+    if(oModules && oModules.length) {
+      return _formatModules(oModules[0].split(','));
+    }
   }
-  return null;
+  return [];
 }
 
 function _combineModules(basicModules, customModules) {
@@ -450,7 +457,7 @@ function _buildOrigamiUrl(modules, type) {
   return `https://www.ft.com/__origami/service/build/v2/bundles/${type}?modules=${moduleStrings.join(',')}&autoinit=0`;
 }
 
-module.exports = $ => {
+module.exports = ($) => {
   const navData = getNavData();
   return navData.then(data => {
     $('head').prepend(headSnippet);
