@@ -11,7 +11,6 @@ const comments = require('./comments');
 const headerFooter = require('./header-footer');
 const imageservice = require('./imageservice');
 const relPathCssJs = require('./rel-path-css-js');
-const oTracking = require('./o-tracking');
 const utils = require('./utils');
 
 const resultBase = `http://${process.env.DEST_BUCKET}.s3-website-` +
@@ -34,14 +33,12 @@ function pipeline(body, item, cb) {
   if (args.uuid) { // Editorial project
     comments($, args)
         .then(withComments => headerFooter(withComments, args))
-        .then(withHeader => oTracking(withHeader, args))
-        .then(withTracking => utils.deploy(item, withTracking.html()))
+        .then(withHeader => utils.deploy(item, withHeader.html()))
         .then(key => cb(null, `Deployed to: ${resultBase}${key}`))
         .catch(cb);
   } else {// Commercial Content
     headerFooter($)
-      .then(withHeader => oTracking(withHeader))
-      .then(withTracking => utils.deploy(item, withTracking.html()))
+      .then(withHeader => utils.deploy(item, withHeader.html()))
       .then(key => cb(null, `Deployed to: ${resultBase}${key}`))
       .catch(cb);
   }
