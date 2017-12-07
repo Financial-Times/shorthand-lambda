@@ -158,12 +158,6 @@ module.exports = (origamiCssUrl) => `
 			}
 		}
 		
-		@media(min-width: 490px) and (max-width: 739px) {
-		    .disclaimer__box {
-          top:52px;
-          left:0;
-        }
-		}
 		@media(min-width: 740px) and (max-width: 979px) {
 		    .disclaimer__box {
           top:88px;
