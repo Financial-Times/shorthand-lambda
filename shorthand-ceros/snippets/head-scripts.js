@@ -147,7 +147,7 @@ module.exports = (origamiCssUrl) => `
 		}
 
 
-		@media(max-width: 489px) {
+		@media(max-width: 739px) {
 			.disclaimer__box {
 				top:48px;
 				left:0;
