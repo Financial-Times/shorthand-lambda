@@ -9,30 +9,44 @@ const navHtml = require('./snippets/nav-html');
 const origamiModules = [
   {
     name: "o-grid",
-    version: "4.3.3"
+    version: "4.3.3",
+    css: true,
+    js: true
   },
   {
     name: "o-header",
-    version: "7.0.4"
+    version: "7.0.4",
+    css: true,
+    js: true,
   },
   {
     name: "o-footer",
-    version: "6.0.2"
+    version: "6.0.2",
+    css: true,
+    js: true
   },
   {
     name: "o-typography",
-    version: "5.1.1"
+    version: "5.1.1",
+    css: true,
+    js: true
   },
   {
     name: "o-colors",
-    version: "4.1.1"
+    version: "4.1.1",
+    css: true,
+    js: true
   },
   {
     name: "o-tooltip",
-    version: "2.2.3"
+    version: "2.2.3",
+    css: true,
+    js: true
   },
   {
-    name: "o-tracking"
+    name: "o-tracking",
+    css: false,
+    js: true
   }
 ];
 
@@ -74,9 +88,16 @@ function getTrackingPageOptions(uuid) {
  * @param $
  * @param type ('js' | 'css')
  */
-function getOrigamiUrl($, type) {
-  const customOrigamiModules = _getCustomOrigamiModules($);
-  return _buildOrigamiUrl(_combineModules(origamiModules, customOrigamiModules), type);
+function getOrigamiScriptUrl($) {
+  const customOrigamiModules = _getCustomOrigamiScriptModules($);
+  const JsOrigamiModules = origamiModules.filter(module => module.js === true);
+  return _buildOrigamiUrl(_combineModules(JsOrigamiModules, customOrigamiModules), 'js');
+}
+
+function getOrigamiCssUrl($) {
+  const customOrigamiModules = _getCustomOrigamiCssModules($);
+  const CssOrigamiModules = origamiModules.filter(module => module.css === true);
+  return _buildOrigamiUrl(_combineModules(CssOrigamiModules, customOrigamiModules), 'css');
 }
 
 
@@ -91,8 +112,8 @@ function _formatModules(modules) {
   }));
 }
 
-function _getCustomOrigamiModules($) {
-  const oScript = $('script[src^="https://www.ft.com/__origami/service/build"]');
+function _getCustomOrigamiScriptModules($) {
+  const oScript = $('script[src^="https://www.ft.com/__origami/service/build/v2/bundles/js"]');
   let modules = [];
 
   if(oScript.is('script') && oScript.attr('src')) {
@@ -103,6 +124,21 @@ function _getCustomOrigamiModules($) {
   }
   // Delete the original script;
   oScript.remove();
+  return modules;
+}
+
+function _getCustomOrigamiCssModules($) {
+  const oCss = $('link[href^="https://www.ft.com/__origami/service/build/v2/bundles/css"]');
+  let modules = [];
+
+  if(oCss.is('link') && oCss.attr('href')) {
+    const oModules = oCss.attr('href').match(/o-([^&]+)/);
+    if(oModules && oModules.length) {
+      modules = _formatModules(oModules[0].split(','));
+    }
+  }
+  // Delete the original script;
+  oCss.remove();
   return modules;
 }
 
@@ -133,11 +169,11 @@ module.exports = ($, args) => {
   const uuid = args && Object.prototype.hasOwnProperty.call(args, 'uuid') ? args.uuid : false;
 
   return navData.then(data => {
-    $('head').prepend(headScripts(getOrigamiUrl($, 'css')));
+    $('head').prepend(headScripts(getOrigamiCssUrl($)));
     $('body').prepend(headerHtml);
     $('body').append(footerHtml);
     $('body').append(navHtml(data));
-    $('body').append(footerScripts(getOrigamiUrl($, 'js'), getTrackingPageOptions(uuid)));
+    $('body').append(footerScripts(getOrigamiScriptUrl($), getTrackingPageOptions(uuid)));
     replaceTooltipSponsor($);
 
     return Promise.resolve($);
