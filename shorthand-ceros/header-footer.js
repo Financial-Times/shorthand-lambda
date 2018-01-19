@@ -73,7 +73,7 @@ function replaceTooltipSponsor($) {
 function getTrackingPageOptions(uuid) {
   return `
   {
-    content: { 
+    content: {
       ${uuid ? `uuid: '${uuid}',` : ''}
       asset_type: 'page'
     }
@@ -161,7 +161,7 @@ function _buildOrigamiUrl(modules, type) {
     return module.version ? `${module.name}@^${module.version}` : module.name;
   });
 
-  return `https://www.ft.com/__origami/service/build/v2/bundles/${type}?modules=${modulesWithVersion.join(',')}${ type === 'js' ? '&autoinit=0' : ''}`;
+  return `https://www.ft.com/__origami/service/build/v2/bundles/${type}?modules=${modulesWithVersion.join(',')}${type === 'js' ? '&autoinit=0&export=""' : ''}`;
 }
 
 module.exports = ($, args) => {

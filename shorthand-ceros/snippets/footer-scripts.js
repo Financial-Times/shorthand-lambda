@@ -24,7 +24,7 @@ module.exports = (origamiScriptUrl, trackingPageOptions) => `<script id="ft-js">
 				}
 			}
 		}
-		
+
 		function oTrackinginit() {
           // oTracking
           var oTracking = Origami['o-tracking'];
@@ -73,7 +73,7 @@ module.exports = (origamiScriptUrl, trackingPageOptions) => `<script id="ft-js">
 				}
 			});
 		}
-		
+
 		// Need to make some changes to the DOM before initialising the
     // origami components so we fire off the o.DOMContentLoaded when
     // we're ready.
@@ -106,7 +106,7 @@ module.exports = (origamiScriptUrl, trackingPageOptions) => `<script id="ft-js">
 			}
 			s.parentNode.insertBefore(o, s);
 		}
-		
+
 		// The mustard is NOT cut
 		else {
 		  // Add fallback if browsers don't cut the mustard -->
