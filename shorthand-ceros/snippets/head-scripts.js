@@ -74,7 +74,7 @@ module.exports = (origamiCssUrl) => `
 
 		.disclaimer__box {
 			position: absolute;
-			top: 88px;
+			top: 100px;
 			display: block;
 			padding: 10px;
 			background-color: white;
@@ -146,10 +146,15 @@ module.exports = (origamiCssUrl) => `
 			top: 4px !important;
 		}
 
+		@media(max-width: 489px) {
+			.disclaimer__box {
+				top:48px;
+			}
+		}
 
 		@media(max-width: 739px) {
 			.disclaimer__box {
-				top:48px;
+				top:52px;
 				left:0;
 			}
 
@@ -157,11 +162,11 @@ module.exports = (origamiCssUrl) => `
 				margin: 0 10px;
 			}
 		}
-		
+
 		@media(min-width: 740px) and (max-width: 979px) {
 		    .disclaimer__box {
-          top:88px;
-          left:0;
-        }
+				top:88px;
+				left:0;
+			}
 		}
 	</style>`;
