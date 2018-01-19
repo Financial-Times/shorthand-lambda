@@ -27,7 +27,7 @@ module.exports = (origamiScriptUrl, trackingPageOptions) => `<script id="ft-js">
 
 		function oTrackinginit() {
           // oTracking
-          var oTracking = Origami['o-tracking'];
+          var oTracking = OrigamiDefault['o-tracking'];
           var sponsor = document.querySelector('meta[name="sponsor"]');
           var parent = document.querySelector('meta[name="parent"]');
           var config_data = {
