@@ -161,7 +161,7 @@ function _buildOrigamiUrl(modules, type) {
     return module.version ? `${module.name}@^${module.version}` : module.name;
   });
 
-  return `https://www.ft.com/__origami/service/build/v2/bundles/${type}?modules=${modulesWithVersion.join(',')}${type === 'js' ? '&export="OrigamiDefault"' : ''}`;
+  return `https://www.ft.com/__origami/service/build/v2/bundles/${type}?modules=${modulesWithVersion.join(',')}${type === 'js' ? '&export=OrigamiDefault' : ''}`;
 }
 
 module.exports = ($, args) => {
