@@ -82,7 +82,7 @@ module.exports = (origamiCssUrl) => `
 			font-size: 13px;
 			border: 1px solid #DADADA;
 			cursor: pointer;
-			z-index: 99999;
+			z-index: 98;
 		}
 
 		.disclaimer__box.sticky {
