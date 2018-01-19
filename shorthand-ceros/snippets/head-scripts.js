@@ -124,16 +124,13 @@ module.exports = (origamiCssUrl) => `
 		}
 
 		.disclaimer .o-tooltip-content {
-			font-size: 13px;
 			margin-right: 50px;
 			padding-top: 10px;
 			padding-bottom: 10px;
 		}
 
-		.disclaimer .o-tooltip-content sup {
-			font-size: 9px;
-			position: absolute;
-			top: 4px;
+		.disclaimer .o-tooltip-content p {
+			font-size: 16px;
 		}
 
 		.o-tooltip--arrow-above.sticky {
