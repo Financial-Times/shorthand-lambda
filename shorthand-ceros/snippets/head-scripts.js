@@ -46,10 +46,6 @@ module.exports = (origamiCssUrl) => `
 			padding: 0;
 		}
 
-		body {
-			background-color: #FFF1E0;
-		}
-
 		.o-header__drawer,
 		.o-header {
 			font-family: MetricWeb,sans-serif;
