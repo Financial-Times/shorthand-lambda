@@ -47,7 +47,6 @@ module.exports = (origamiCssUrl) => `
 		}
 
 		body {
-
 			background-color: #FFF1E0;
 		}
 
@@ -67,14 +66,9 @@ module.exports = (origamiCssUrl) => `
 			font-size: 12px;
 		}
 
-
-		.disclaimer {
-		    position: static !important;
-		}
-
 		.disclaimer__box {
 			position: absolute;
-			top: 100px;
+			top: 0;
 			display: block;
 			padding: 10px;
 			background-color: white;
@@ -124,6 +118,7 @@ module.exports = (origamiCssUrl) => `
 		}
 
 		.disclaimer .o-tooltip-content {
+		  font-family: MetricWeb, sans-serif;
 			margin-right: 50px;
 			padding-top: 10px;
 			padding-bottom: 10px;
@@ -141,29 +136,5 @@ module.exports = (origamiCssUrl) => `
 		.o-tooltip--arrow-left.sticky {
 			position: fixed;
 			top: 4px !important;
-		}
-
-		@media(max-width: 489px) {
-			.disclaimer__box {
-				top:48px;
-			}
-		}
-
-		@media(max-width: 739px) {
-			.disclaimer__box {
-				top:52px;
-				left:0;
-			}
-
-			.disclaimer .o-tooltip {
-				margin: 0 10px;
-			}
-		}
-
-		@media(min-width: 740px) and (max-width: 979px) {
-		    .disclaimer__box {
-				top:88px;
-				left:0;
-			}
 		}
 	</style>`;

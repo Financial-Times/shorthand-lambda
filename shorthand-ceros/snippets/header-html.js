@@ -1,17 +1,10 @@
 'use strict';
 
 module.exports = `
-    <header class="o-header" data-o-component="o-header" data-o-header--no-js="">
+<header class="o-header" data-o-component="o-header" data-o-header--no-js="">
 	<div class="o-header__row o-header__top">
 		<div class="o-header__container">
 			<div class="o-header__top-wrapper">
-				<section class="disclaimer" id="disclaimer">
-					<div class="disclaimer__box" id="paid-post-tooltip-target">
-						<span class="disclaimer__paid-post">Paid Post</span>
-						<span class="disclaimer__sponsor">[[REPLACED FROM META TAG WITH name="tooltip:sponsor" in uploaded page]]</span>
-						<span class="disclaimer__info">i</span>
-					</div>
-				</section>
 				<div id="paid-post-tooltip" data-o-component="o-tooltip"
 					 data-o-tooltip-position="right"
 					 data-o-tooltip-target="paid-post-tooltip-target"
@@ -35,4 +28,12 @@ module.exports = `
 				<div class="o-header__top-column o-header__top-column--right"></div>
 			</div>
 		</div>
-	</div>`;
+	</div>
+</header>
+<div class="o-grid-container disclaimer">
+  <div class="disclaimer__box" id="paid-post-tooltip-target">
+    <span class="disclaimer__paid-post">Paid Post</span>
+    <span class="disclaimer__sponsor">[[REPLACED FROM META TAG WITH name="tooltip:sponsor" in uploaded page]]</span>
+    <span class="disclaimer__info">i</span>
+  </div>
+</div>`;
