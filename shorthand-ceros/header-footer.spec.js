@@ -34,7 +34,7 @@ describe('headerFooter', () => {
 
     it('adds the paid-post banner with a tooltip', () => {
       return headerFooter($, ArgsFixture).then(result => {
-        expect(result('#disclaimer').is('section')).to.be.true;
+        expect(result('#disclaimer').is('div')).to.be.true;
         expect(result('#paid-post-tooltip').attr('data-o-component')).to.equal('o-tooltip');
         expect(result('.o-tooltip-content').is('div')).to.be.true;
       });
@@ -98,7 +98,7 @@ describe('headerFooter', () => {
 
       return headerFooter($, ArgsFixture).then(result => {
         expect(result('head').html()).to.include('https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-grid@^4.3.3,o-header@^7.0.4,o-footer@^6.0.2,o-typography@^5.1.1,o-colors@^4.1.1,o-tooltip@^2.2.3,o-fonts@^3.0.1,o-share@^6.0.1,o-gallery@^3.0.2,o-normalise@^1.5.1,o-overlay@^2.1.4,o-buttons');
-        expect(result('body').text()).to.include('https://www.ft.com/__origami/service/build/v2/bundles/js?modules=o-grid@^4.3.3,o-header@^7.0.4,o-footer@^6.0.2,o-typography@^5.1.1,o-colors@^4.1.1,o-tooltip@^2.2.3,o-tracking,o-fonts@^3.0.1,o-share@^6.0.1,o-gallery@^3.0.2,o-normalise@^1.5.1,o-overlay@^2.1.4,o-buttons&export=OrigamiDefault');
+        expect(result('body').text()).to.include('https://www.ft.com/__origami/service/build/v2/bundles/js?modules=o-grid@^4.3.3,o-header@^7.0.4,o-footer@^6.0.2,o-typography@^5.1.1,o-colors@^4.1.1,o-tooltip@^2.2.3,o-tracking,o-fonts@^3.0.1,o-share@^6.0.1,o-gallery@^3.0.2,o-normalise@^1.5.1,o-overlay@^2.1.4,o-buttons');
       });
     });
   });
