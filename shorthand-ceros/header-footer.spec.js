@@ -34,7 +34,7 @@ describe('headerFooter', () => {
 
     it('adds the paid-post banner with a tooltip', () => {
       return headerFooter($, ArgsFixture).then(result => {
-        expect(result('#disclaimer').is('section')).to.be.true;
+        expect(result('#disclaimer').is('div')).to.be.true;
         expect(result('#paid-post-tooltip').attr('data-o-component')).to.equal('o-tooltip');
         expect(result('.o-tooltip-content').is('div')).to.be.true;
       });

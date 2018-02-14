@@ -30,7 +30,7 @@ module.exports = `
 		</div>
 	</div>
 </header>
-<div class="o-grid-container disclaimer">
+<div id="disclaimer" class="o-grid-container disclaimer">
   <div class="disclaimer__box" id="paid-post-tooltip-target">
     <span class="disclaimer__paid-post">Paid Post</span>
     <span class="disclaimer__sponsor">[[REPLACED FROM META TAG WITH name="tooltip:sponsor" in uploaded page]]</span>
