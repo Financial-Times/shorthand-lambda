@@ -67,6 +67,7 @@ function getNavData() {
 function replaceTooltipSponsor($) {
   const sponsor = $('meta[name="sponsor"]').attr('content');
   $('.disclaimer__sponsor').text(`BY ${sponsor}`);
+  $('.paid-post-tooltip__sponsor').text(sponsor);
 }
 
 

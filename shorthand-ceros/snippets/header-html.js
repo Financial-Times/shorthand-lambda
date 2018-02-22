@@ -12,7 +12,7 @@ module.exports = `
 					 data-o-tooltip-close-after="5"
 					 data-o-tooltip-toggle-on-click="true">
 					<div class="o-tooltip-content">
-						<p>This page was produced by FT<sup>2</sup>, the advertising department of the Financial Times.  The news and editorial staff of the Financial Times had no role in its preparation.</p>
+						<p>This content was produced by the advertising department of the Financial Times, in collaboration with <span class="paid-post-tooltip__sponsor"></span></p>
 					</div>
 				</div>
 				<div class="o-header__top-column o-header__top-column--left">
