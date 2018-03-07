@@ -39,7 +39,7 @@ const origamiModules = [
   },
   {
     name: "o-tooltip",
-    version: "2.2.3",
+    version: "3.1.1",
     css: true,
     js: true
   },
@@ -66,7 +66,7 @@ function getNavData() {
 
 function replaceTooltipSponsor($) {
   const sponsor = $('meta[name="sponsor"]').attr('content');
-  $('.disclaimer__sponsor').text(`BY ${sponsor}`);
+  $('.disclaimer__sponsor').text(`by ${sponsor}`);
   $('.paid-post-tooltip__sponsor').text(sponsor);
 }
 
