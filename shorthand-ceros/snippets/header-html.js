@@ -5,16 +5,6 @@ module.exports = `
 	<div class="o-header__row o-header__top">
 		<div class="o-header__container">
 			<div class="o-header__top-wrapper">
-				<div id="paid-post-tooltip" data-o-component="o-tooltip"
-					 data-o-tooltip-position="right"
-					 data-o-tooltip-target="paid-post-tooltip-target"
-					 data-o-tooltip-show-on-construction="true"
-					 data-o-tooltip-close-after="5"
-					 data-o-tooltip-toggle-on-click="true">
-					<div class="o-tooltip-content">
-						<p>This content was produced by the advertising department of the Financial Times, in collaboration with <span class="paid-post-tooltip__sponsor"></span></p>
-					</div>
-				</div>
 				<div class="o-header__top-column o-header__top-column--left">
 					<a href="#o-header-drawer" class="o-header__top-link o-header__top-link--menu" aria-controls="o-header-drawer">
 						<span class="o-header__top-link-label">Menu</span>
@@ -35,5 +25,15 @@ module.exports = `
     <span class="disclaimer__paid-post">Paid Post</span>
     <span class="disclaimer__sponsor">[[REPLACED FROM META TAG WITH name="tooltip:sponsor" in uploaded page]]</span>
     <span class="disclaimer__info">i</span>
+  </div>
+  <div id="paid-post-tooltip" data-o-component="o-tooltip"
+					 data-o-tooltip-position="right"
+					 data-o-tooltip-target="paid-post-tooltip-target"
+					 data-o-tooltip-show-on-construction="true"
+					 data-o-tooltip-close-after="5"
+					 data-o-tooltip-toggle-on-click="true">
+    <div class="o-tooltip-content">
+      <p>This content was produced by the advertising department of the Financial Times, in collaboration with <span class="paid-post-tooltip__sponsor"></span></p>
+    </div>
   </div>
 </div>`;
