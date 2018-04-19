@@ -4,6 +4,11 @@ module.exports = (origamiCssUrl) => `
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://www.ft.com/__origami/service/image/v2/images/raw/ftlogo-v1%3Abrand-ft-logo-square-coloured?source=update-logos&amp;width=32&amp;height=32&amp;format=png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.ft.com/__origami/service/image/v2/images/raw/ftlogo-v1%3Abrand-ft-logo-square-coloured?source=update-logos&amp;width=194&amp;height=194&amp;format=png" sizes="194x194">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://www.ft.com/__origami/service/image/v2/images/raw/ftlogo-v1%3Abrand-ft-logo-square-coloured?source=update-logos&amp;width=180&amp;height=180&amp;format=png">
+    <meta name="msapplication-TileColor" content="#fff1e0">
+    <meta name="msapplication-TileImage" content="https://www.ft.com/__assets/creatives/brand-ft/icons/v3/mstile-144x144.png">
     <link rel="stylesheet" href="${origamiCssUrl}" />
     <script id="cuts-the-mustard">
         var cutsTheMustard = ('querySelector' in document && 'localStorage' in window && 'addEventListener' in window);
