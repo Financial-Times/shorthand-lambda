@@ -1,0 +1,29 @@
+version: 2
+environment:
+  TZ: "Europe/London"
+jobs:
+  build:
+    working_directory: ~/project
+    docker:
+      - image: node:6.10.3
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Test
+          command: npm test
+      - run:
+          name: Generate coverage
+          command: bash <(curl -s https://codecov.io/bash)
+      - store_artifacts:
+          name: Store artifacts (coverage)
+          path: coverage/
+      - deploy:
+          name: Deploy
+          command: |
+            if [ $CIRCLE_BRANCH = "master" ]
+            then
+              make deploy
+            fi
