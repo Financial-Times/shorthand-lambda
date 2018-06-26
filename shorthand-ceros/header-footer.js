@@ -47,6 +47,11 @@ const origamiModules = [
     name: "o-tracking",
     css: false,
     js: true
+  },
+  {
+    name: "o-viewport",
+    css: false,
+    js: true
   }
 ];
 
@@ -165,6 +170,39 @@ function _buildOrigamiUrl(modules, type) {
   return `https://www.ft.com/__origami/service/build/v2/bundles/${type}?modules=${modulesWithVersion.join(',')}`;
 }
 
+function events() {
+  const events = require('./events');
+
+  return `
+  <script id="ft-events">
+    const ATTENTION_INTERVAL = 15000;
+    const ATTENTION_EVENTS = ['load', 'click', 'focus', 'scroll', 'mousemove', 'touchstart', 'touchend', 'touchcancel', 'touchleave'];
+    const UNATTENTION_EVENTS = ['blur'];
+    const EXIT_EVENTS = ['beforeunload', 'unload', 'pagehide'];
+    const broadcast = ${events.broadcast.toString()}
+
+    let events = {};
+    const fireBeacon = ${events.fireBeacon.toString()}
+    ${events.Attention.toString()}
+    events.attention = new Attention();
+    events.scrollDepthInit = ${events.scrollDepthInit.toString()}
+
+    const intervalId = setInterval(function() {
+			if(window.Origami) {
+				clearInterval(intervalId);
+				clearTimeout(timeoutId);
+        events.attention.init();
+        events.scrollDepthInit('paid-post');
+			}
+		}, 20);
+
+		const timeoutId = setTimeout(function() {
+			clearInterval(intervalId);
+		}, 1000)
+  </script>`;
+}
+
+
 module.exports = ($, args) => {
   const navData = getNavData();
   const uuid = args && Object.prototype.hasOwnProperty.call(args, 'uuid') ? args.uuid : false;
@@ -175,6 +213,7 @@ module.exports = ($, args) => {
     $('body').append(footerHtml);
     $('body').append(navHtml(data));
     $('body').append(footerScripts(getOrigamiScriptUrl($), getTrackingPageOptions(uuid)));
+    $('body').append(events());
     replaceTooltipSponsor($);
 
     return Promise.resolve($);
