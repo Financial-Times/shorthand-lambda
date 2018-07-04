@@ -1,3 +1,4 @@
+'use strict';
 const broadcast = function (name, data, bubbles = true) {
 	const rootEl = Element.prototype.isPrototypeOf(this) ? this : document.body;
 	let event;
@@ -166,7 +167,7 @@ const scrollDepthInit = (contextSource, { percentages = [25, 50, 75, 100], selec
 		}
 };
 
-module.exports = {
+exports = module.exports = {
 	Attention,
 	broadcast,
 	fireBeacon,
