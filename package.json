@@ -32,7 +32,7 @@
     "space": true
   },
   "dependencies": {
-    "aws-sdk": "^2.22.0",
+    "aws-sdk": "^2.268.1",
     "axios": "^0.15.3",
     "cheerio": "^0.22.0",
     "node-fetch": "^1.7.3",
@@ -41,13 +41,13 @@
   "devDependencies": {
     "aws-lambda-test-utils": "^1.0.2",
     "chai": "^3.5.0",
-    "mocha": "^3.2.0",
-    "nyc": "^10.1.2",
+    "mocha": "^5.2.0",
+    "nyc": "^13.0.0",
     "proxyquire": "^1.7.11",
-    "serverless": "^1.6.1",
+    "serverless": "^1.28.0",
     "serverless-external-s3-event": "^1.0.4",
     "sinon": "^1.17.7",
     "sinon-chai": "^2.8.0",
-    "xo": "^0.17.1"
+    "xo": "^0.21.1"
   }
 }
