@@ -192,7 +192,7 @@ function events() {
 				clearInterval(intervalId);
 				clearTimeout(timeoutId);
         events.attention.init();
-        events.scrollDepthInit('paid-post');
+        events.scrollDepthInit('paid-post', { selector: '.post-container'});
 			}
 		}, 20);
 
