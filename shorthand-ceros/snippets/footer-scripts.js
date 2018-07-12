@@ -45,10 +45,16 @@ module.exports = (origamiScriptUrl, trackingPageOptions) => `<script id="ft-js">
               }
           }
           // Setup
-          oTracking.init(config_data);
+		  oTracking.init(config_data);
+		  // Automatically track clicks 
+		  oTracking.click.init();
           // Page
           oTracking.page(${trackingPageOptions});
-      }
+	  }
+	  
+	  function closeTooltip(closeEl) {
+		  closeEl.dispatchEvent(new Event('click', {"bubbles":true }));
+	  }
 
 		function stickyOnScroll() {
 			// Sticky ads
@@ -57,9 +63,7 @@ module.exports = (origamiScriptUrl, trackingPageOptions) => `<script id="ft-js">
 			var headerEl = document.getElementsByClassName('o-header')[0];
 			var adPosTop = headerEl.getBoundingClientRect().height;
 			var closeEl = document.getElementsByClassName('o-tooltip-close')[0];
-			function closeTooltip() {
-				closeEl.dispatchEvent(new Event('click', {"bubbles":true }));
-			}
+			closeTooltip(closeEl)
 
 			window.addEventListener('scroll', throttle(closeTooltip, 150));
 			window.addEventListener('scroll', function() {
