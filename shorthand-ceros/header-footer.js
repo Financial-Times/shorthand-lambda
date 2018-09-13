@@ -192,7 +192,7 @@ function events() {
 				clearInterval(intervalId);
 				clearTimeout(timeoutId);
         events.attention.init();
-        events.scrollDepthInit('paid-post', { selector: '.post-container'});
+        events.scrollDepthInit('paid-post', { selector: '#content'});
 			}
 		}, 20);
 
@@ -209,7 +209,7 @@ module.exports = ($, args) => {
 
   return navData.then(data => {
     $('head').prepend(headScripts(getOrigamiCssUrl($)));
-    $('body').prepend(headerHtml);
+	$('body').prepend(headerHtml);
     $('body').append(footerHtml);
     $('body').append(navHtml(data));
     $('body').append(footerScripts(getOrigamiScriptUrl($), getTrackingPageOptions(uuid)));

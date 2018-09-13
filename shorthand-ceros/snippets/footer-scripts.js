@@ -47,25 +47,27 @@ module.exports = (origamiScriptUrl, trackingPageOptions) => `<script id="ft-js">
           // Setup
 		  oTracking.init(config_data);
 		  // Automatically track clicks 
-		  oTracking.click.init();
+		  oTracking.click.init('cta');
           // Page
           oTracking.page(${trackingPageOptions});
-	  }
-	  
-	  function closeTooltip(closeEl) {
-		  closeEl.dispatchEvent(new Event('click', {"bubbles":true }));
 	  }
 
 		function stickyOnScroll() {
 			// Sticky ads
 			var adTargetEl = document.getElementById('paid-post-tooltip-target');
 			var adContentEl = document.getElementById('paid-post-tooltip');
-			var headerEl = document.getElementsByClassName('o-header')[0];
+			var headerEl = document.querySelector('.o-header');
 			var adPosTop = headerEl.getBoundingClientRect().height;
-			var closeEl = document.getElementsByClassName('o-tooltip-close')[0];
-			closeTooltip(closeEl)
+			var closeEl = document.querySelector('.o-tooltip-close');
+			var tooltipEl = document.querySelector('.o-tooltip');
+			
+			function closeTooltip() {
+				if(tooltipEl && tooltipEl.style.display === 'block') {
+					closeEl.dispatchEvent(new Event('click', {"bubbles":true }));
+				}
+			}
 
-			window.addEventListener('scroll', throttle(closeTooltip, 150));
+			window.addEventListener('scroll', throttle(closeTooltip, 2000));
 			window.addEventListener('scroll', function() {
 				var lastScrollPos = window.scrollY;
 				if(lastScrollPos > adPosTop) {
@@ -85,7 +87,11 @@ module.exports = (origamiScriptUrl, trackingPageOptions) => `<script id="ft-js">
       if(window.innerWidth < 740) {
         document.getElementById('paid-post-tooltip').setAttribute('data-o-tooltip-position', 'below');
       }
-    });
+	});
+	
+	document.addEventListener('o.DOMContentLoaded', function() {
+		stickyOnScroll();
+	});
 
 		if (cutsTheMustard) {
 			var o = document.createElement('script');
@@ -97,14 +103,14 @@ module.exports = (origamiScriptUrl, trackingPageOptions) => `<script id="ft-js">
 				o.onreadystatechange = function() {
 					if (o.readyState === "loaded") {
 						document.dispatchEvent(new CustomEvent('o.DOMContentLoaded'));
-						stickyOnScroll();
+						// stickyOnScroll();
 						oTrackinginit();
 					}
 				};
 			} else {
 				o.onload = function() {
 					document.dispatchEvent(new CustomEvent('o.DOMContentLoaded'));
-					stickyOnScroll();
+					// stickyOnScroll();
 					oTrackinginit();
 				}
 			}
