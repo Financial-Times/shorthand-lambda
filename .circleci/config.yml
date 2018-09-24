@@ -5,7 +5,7 @@ jobs:
   build:
     working_directory: ~/project
     docker:
-      - image: node:6.10.3
+      - image: circleci/node:8-browsers
     steps:
       - checkout
       - run:
