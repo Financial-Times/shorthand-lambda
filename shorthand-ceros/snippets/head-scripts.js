@@ -141,6 +141,6 @@ module.exports = (origamiCssUrl) => `
 
 		/* This is needed for scroll depth events to work */
 		#content {
-			display: relative !important;
+			position: relative !important;
 		}
 	</style>`;
