@@ -23,7 +23,7 @@ jobs:
       - deploy:
           name: Deploy
           command: |
-            if [ $CIRCLE_BRANCH = "master" ]
+            if [ $CIRCLE_BRANCH = "main" ]
             then
               make deploy
             fi
