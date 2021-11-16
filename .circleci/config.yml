@@ -1,13 +1,18 @@
-version: 2
+version: 2.1
+
+orbs:
+  node: circleci/node@4.6.0
 environment:
   TZ: "Europe/London"
 jobs:
   build:
     working_directory: ~/project
     docker:
-      - image: circleci/node:8-browsers
+      - image: cimg/node:14.18-browsers
     steps:
       - checkout
+      - node/install-npm:
+          version: "8"
       - run:
           name: Install dependencies
           command: npm install
