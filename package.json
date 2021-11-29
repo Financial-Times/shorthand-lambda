@@ -7,9 +7,13 @@
     "Ændrew Rininsland"
   ],
   "license": "MIT",
-  "scripts": {
-    "test": "mocha shorthand-ceros/**/*.spec.js",
-    "test:watch": "mocha -w shorthand-ceros/**/*.spec.js"
+  "volta": {
+    "node": "14.18.1",
+    "npm": "8.1.3"
+  },
+  "engines": {
+    "node": "14.x",
+    "npm": "7.x || 8.x"
   },
   "xo": {
     "rules": {
@@ -39,8 +43,10 @@
     "uuid": "^2.0.3"
   },
   "devDependencies": {
+    "@types/mocha": "9.0.0",
     "aws-lambda-test-utils": "^1.0.2",
     "chai": "^3.5.0",
+    "check-engines": "1.5.0",
     "mocha": "^5.2.0",
     "nyc": "^13.0.0",
     "proxyquire": "^1.7.11",
@@ -49,5 +55,10 @@
     "sinon": "^1.17.7",
     "sinon-chai": "^2.8.0",
     "xo": "^0.45.0"
+  },
+  "scripts": {
+    "test": "mocha shorthand-ceros/**/*.spec.js",
+    "test:watch": "mocha -w shorthand-ceros/**/*.spec.js",
+    "preinstall": "[ \"$INIT_CWD\" != \"$PWD\" ] || npm_config_yes=true npx check-engine"
   }
 }
