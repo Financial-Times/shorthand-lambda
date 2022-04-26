@@ -9,48 +9,56 @@ const navHtml = require('./snippets/nav-html');
 const origamiModules = [
   {
     name: "o-grid",
-    version: "4.3.3",
+    version: "6.1.5",
     css: true,
     js: true
   },
   {
     name: "o-header",
-    version: "7.2.9",
+    version: "10.0.1",
     css: true,
     js: true,
   },
   {
     name: "o-footer",
-    version: "6.0.2",
+    version: "9.2.2",
     css: true,
     js: true
   },
   {
     name: "o-typography",
-    version: "5.1.1",
+    version: "7.3.2",
     css: true,
     js: true
   },
   {
     name: "o-colors",
-    version: "4.1.1",
+    version: "6.4.2",
     css: true,
     js: true
   },
   {
     name: "o-tooltip",
-    version: "3.1.1",
+    version: "5.2.2",
     css: true,
     js: true
   },
   {
     name: "o-tracking",
+    version: "4.3.2",
     css: false,
     js: true
   },
   {
     name: "o-viewport",
+    version: "5.1.1",
     css: false,
+    js: true
+  },
+  {
+    name: "o-autoinit",
+    version: "3.1.3",
+    css: true,
     js: true
   }
 ];
@@ -119,7 +127,7 @@ function _formatModules(modules) {
 }
 
 function _getCustomOrigamiScriptModules($) {
-  const oScript = $('script[src^="https://www.ft.com/__origami/service/build/v2/bundles/js"]');
+  const oScript = $('script[src^="https://www.ft.com/__origami/service/build/v3/bundles/js"]');
   let modules = [];
 
   if(oScript.is('script') && oScript.attr('src')) {
@@ -134,7 +142,7 @@ function _getCustomOrigamiScriptModules($) {
 }
 
 function _getCustomOrigamiCssModules($) {
-  const oCss = $('link[href^="https://www.ft.com/__origami/service/build/v2/bundles/css"]');
+  const oCss = $('link[href^="https://www.ft.com/__origami/service/build/v3/bundles/css"]');
   let modules = [];
 
   if(oCss.is('link') && oCss.attr('href')) {
@@ -167,7 +175,7 @@ function _buildOrigamiUrl(modules, type) {
     return module.version ? `${module.name}@^${module.version}` : module.name;
   });
 
-  return `https://www.ft.com/__origami/service/build/v2/bundles/${type}?modules=${modulesWithVersion.join(',')}`;
+  return `https://www.ft.com/__origami/service/build/v3/bundles/${type}?components=${modulesWithVersion.join(',')}&amp;system_code=ft-shorthand-ceros-publishing${ type === "css" ? "&amp;brand=master" : ""}`;
 }
 
 function events() {

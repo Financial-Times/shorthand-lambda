@@ -55,7 +55,7 @@ describe('headerFooter', () => {
 
     it('adds the origami build service stylesheet', () => {
       return headerFooter($, ArgsFixture).then(result => {
-        expect(result('link[rel="stylesheet"]').attr('href')).to.include('https://www.ft.com/__origami/service/build/v2/bundles/css');
+        expect(result('link[rel="stylesheet"]').attr('href')).to.include('https://www.ft.com/__origami/service/build/v3/bundles/css');
       });
     });
   });
@@ -98,8 +98,8 @@ describe('headerFooter', () => {
       $ = cheerio.load(fixture);
 
       return headerFooter($, ArgsFixture).then(result => {
-        expect(result('head').html()).to.include('https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-grid@^4.3.3,o-header@^7.2.9,o-footer@^6.0.2,o-typography@^5.1.1,o-colors@^4.1.1,o-tooltip@^3.1.1,o-fonts@^3.0.1,o-share@^6.0.1,o-gallery@^3.0.2,o-normalise@^1.5.1,o-overlay@^2.1.4,o-buttons');
-        expect(result('body').html()).to.include('https://www.ft.com/__origami/service/build/v2/bundles/js?modules=o-grid@^4.3.3,o-header@^7.2.9,o-footer@^6.0.2,o-typography@^5.1.1,o-colors@^4.1.1,o-tooltip@^3.1.1,o-tracking,o-viewport,o-fonts@^3.0.1,o-share@^6.0.1,o-gallery@^3.0.2,o-normalise@^1.5.1,o-overlay@^2.1.4,o-buttons');
+        expect(result('head').html()).to.include('https://www.ft.com/__origami/service/build/v3/bundles/css?components=o-grid@^6.1.5,o-header@^10.0.1,o-footer@^9.2.2,o-typography@^7.3.2,o-colors@^6.4.2,o-tooltip@^5.2.2,o-autoinit@^3.1.3,o-fonts@^5.3.3,o-share@^8.2.2,o-normalise@^3.2.2,o-overlay@^4.2.4,o-buttons@^7.5.0&amp;system_code=ft-shorthand-ceros-publishing&amp;brand=master');
+        expect(result('body').html()).to.include('https://www.ft.com/__origami/service/build/v3/bundles/js?components=o-grid@^6.1.5,o-header@^10.0.1,o-footer@^9.2.2,o-typography@^7.3.2,o-colors@^6.4.2,o-tooltip@^5.2.2,o-tracking@^4.3.2,o-viewport@^5.1.1,o-autoinit@^3.1.3,o-fonts@^5.3.3,o-share@^8.2.2,o-normalise@^3.2.2,o-overlay@^4.2.4,o-buttons@^7.5.0&amp;system_code=ft-shorthand-ceros-publishing');
       });
     });
   });
